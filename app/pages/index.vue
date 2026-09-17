@@ -15,6 +15,8 @@ const headline = [
 ]
 
 const cards = [
+  { to: '/about', zone: 'stage', title: 'About', body: 'Why a practice rack exists, what the family ended up depending on, and photographs of the actual room.', meta: 'the person · the practice · the rules' },
+  { to: '/projects', zone: 'ceph', title: 'Projects', body: 'Things built on the rack rather than run on it. Astrona, Jubelio, and whatever comes next.', meta: 'building · live · archived' },
   { to: '/rack', zone: 'mgmt', title: 'The rack', body: 'All 42U, front and back, including the empty slots and what I\'m saving them for.', meta: 'elevation · cabling · airflow' },
   { to: '/compute', zone: 'prod', title: 'Compute', body: 'Three separate Kubernetes clusters and why they aren\'t three namespaces.', meta: 'prod · stage · management' },
   { to: '/storage', zone: 'ceph', title: 'Storage', body: 'Ceph across 36 disks, the CRUSH layout, and the backup that isn\'t Ceph.', meta: 'osds · pools · backups' },
@@ -23,7 +25,6 @@ const cards = [
   { to: '/ai-data', zone: 'mgmt', title: 'AI & Data', body: 'Local models, the databases under them, and the rule that nothing leaves the house to be processed.', meta: 'models · postgres · mqtt' },
   { to: '/observability', zone: 'pink', title: 'Observability', body: 'Metrics, logs, and the eight rules that are allowed to wake me at three in the morning.', meta: 'metrics · logs · alerts' },
   { to: '/radar', zone: 'prod', title: 'Tech radar', body: 'Every tool in the rack, ringed by how much I trust it — and a page of detail on each one.', meta: 'adopt · trial · research · hold' },
-  { to: '/about', zone: 'stage', title: 'About', body: 'Why a practice rack exists, what the family ended up depending on, and photographs of the actual room.', meta: 'the person · the practice · the rules' },
   { to: '/log', zone: 'mgmt', title: 'Build log', body: 'What changed, what broke, and what I\'d do differently. Newest first.', meta: 'changes · incidents' },
 ]
 </script>

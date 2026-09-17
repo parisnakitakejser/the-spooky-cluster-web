@@ -184,6 +184,8 @@ app/
     security.vue       zone chain diagram, firewall policy, detection
     network.vue        VLANs, hardware, DNS, remote access
     about.vue          who runs it, photographs, what it hosts, the rules
+    projects/index.vue things being built, grouped by status
+    projects/[slug].vue one page per project, pre-rendered from the data
     ai-data.vue        local models, the databases under them, the data path
     observability.vue  metrics, logs, and the rules allowed to wake me
     radar/index.vue    the tech radar chart and the text version of it
@@ -199,6 +201,7 @@ app/
     SiteError                                  the 404 / 500 body
   utils/site.ts        nav links and reading order
   utils/radar.ts       radar entries, geometry and blip placement
+  utils/projects.ts    projects, their status and their stack
   composables/         usePageSeo — title, description and Open Graph in one call
   assets/scss/         every style on the site
 public/favicon.svg     the ghost
@@ -282,6 +285,34 @@ the chart's `httpRoute.hostnames` sets what the gateway routes.
 There is no Open Graph image yet — a shared link shows the title and
 description but no picture. Add one as `public/og.png` at 1200×630 and set
 `ogImage` in `usePageSeo` when you have artwork.
+
+### Projects
+
+`app/utils/projects.ts`. Only `slug`, `name`, `status` and `tagline` are
+required — everything else is optional, and a section of the detail page
+simply does not render when its field is empty. That means a project can go
+up the day it starts and grow a page as it earns one.
+
+```ts
+{
+  slug: 'astrona',
+  name: 'Astrona',
+  status: 'building',          // live | building | paused | archived
+  tagline: '...',              // one line, shown on the card
+  since: '2025',
+  what: '...',                 // what it is
+  why: '...',                  // why it beat doing nothing
+  stack: ['kubernetes'],       // radar slugs become links
+  runsOn: 'crypt (production cluster)',
+  notes: ['...'],              // decisions, or what it taught you
+  links: [{ label: '...', href: 'https://...' }],
+  related: ['jubelio'],
+}
+```
+
+Anything in `stack` that matches a radar slug links to that radar entry, so
+the tooling story and the project story stay joined up. Status drives the
+grouping on the index page and the colour of the card.
 
 ### The tech radar
 

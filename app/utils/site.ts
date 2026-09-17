@@ -5,6 +5,8 @@ export interface SiteLink {
 
 /** The top bar, left to right. */
 export const navLinks: SiteLink[] = [
+  { to: '/about', label: 'About' },
+  { to: '/projects', label: 'Projects' },
   { to: '/rack', label: 'Rack' },
   { to: '/compute', label: 'Compute' },
   { to: '/storage', label: 'Storage' },
@@ -14,7 +16,6 @@ export const navLinks: SiteLink[] = [
   { to: '/observability', label: 'Observability' },
   { to: '/radar', label: 'Radar' },
   { to: '/log', label: 'Log' },
-  { to: '/about', label: 'About' },
 ]
 
 /**
@@ -23,6 +24,8 @@ export const navLinks: SiteLink[] = [
  */
 export const readingOrder: SiteLink[] = [
   { to: '/', label: 'Home' },
+  { to: '/about', label: 'About' },
+  { to: '/projects', label: 'Projects' },
   { to: '/rack', label: 'The rack' },
   { to: '/compute', label: 'Compute' },
   { to: '/storage', label: 'Storage' },
@@ -32,7 +35,6 @@ export const readingOrder: SiteLink[] = [
   { to: '/observability', label: 'Observability' },
   { to: '/radar', label: 'Tech radar' },
   { to: '/log', label: 'Build log' },
-  { to: '/about', label: 'About' },
 ]
 
 export const siteName = 'the spooky cluster'

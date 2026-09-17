@@ -1,3 +1,4 @@
+import { projects } from '../../app/utils/projects'
 import { radarEntries } from '../../app/utils/radar'
 import { readingOrder, siteUrl } from '../../app/utils/site'
 
@@ -9,6 +10,7 @@ export default defineEventHandler((event) => {
   const paths = [
     ...readingOrder.map(p => p.to),
     ...radarEntries.map(e => `/radar/${e.slug}`),
+    ...projects.map(p => `/projects/${p.slug}`),
   ]
 
   const urls = paths

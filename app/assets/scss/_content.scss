@@ -516,8 +516,12 @@ a.chip {
   vertical-align: middle;
   color: var(--faint);
 
-  &[data-status="daily"] { color: zone-color(s); }
-  &[data-status="testing"] { color: zone-color(m); }
+  &[data-status="daily"],
+  &[data-status="live"] { color: zone-color(s); }
+  &[data-status="testing"],
+  &[data-status="building"] { color: zone-color(m); }
+  &[data-status="paused"] { color: zone-color(c); }
+  &[data-status="archived"] { color: zone-color(d); }
   &[data-status="mine"] { color: var(--faint); }
 }
 
