@@ -181,14 +181,18 @@ app/
     storage.vue        Ceph OSDs, pools, CRUSH, backups
     security.vue       zone chain diagram, firewall policy, detection
     network.vue        VLANs, hardware, DNS, remote access
+    radar/index.vue    the tech radar chart and the text version of it
+    radar/[slug].vue   one page per tool, pre-rendered from the data
     log.vue            build log and incidents, newest first
   components/
     SiteHeader/SiteFooter/SitePager/RackRail   chrome
     PageHead ZoneChip StatGrid DataTable       content blocks
     GhostEmblem GhostMini Ghost<Page>          the SVG ghosts
     SecurityChain                              the zone diagram
+    RadarChart RadarLegend                     the radar and its numbered list
     SiteError                                  the 404 / 500 body
   utils/site.ts        nav links and reading order
+  utils/radar.ts       radar entries, geometry and blip placement
   assets/scss/         every style on the site
 public/favicon.svg     the ghost
 Dockerfile             node build, node runtime, unprivileged, port 8080
@@ -244,6 +248,39 @@ invented. Page content lives as plain arrays in each page's `<script setup>`
 object, not copying markup. The node names are themed (crypt, ossuary, séance,
 obelisk, lifeline) — replace them with your real ones or commit to them, but
 don't do half and half.
+
+### The tech radar
+
+Entries live in `app/utils/radar.ts`. Adding a tool is adding one object to
+`radarEntries` — the chart, the numbering, the legend and the pre-rendered
+detail page at `/radar/<slug>` all follow from it.
+
+```ts
+{
+  slug: 'cilium',
+  name: 'Cilium',
+  quadrant: 'platform',        // radarQuadrants[].id
+  ring: 'assess',              // adopt | trial | assess | hold
+  movement: 'new',             // none | new | in | out
+  since: '2026-08',
+  tagline: '...',              // one line, shown in the legend
+  what: '...',                 // what the tool is
+  why: '...',                  // what it does in this rack
+  watch: ['...'],              // the parts that bite
+  links: [{ label: '...', href: 'https://...' }],
+  related: ['kubernetes'],     // other slugs
+}
+```
+
+Quadrants and rings are data too, so renaming a quadrant — or having five of
+them — is an edit to `radarQuadrants`, not to the geometry. The chart divides
+the circle by however many there are.
+
+Blip positions are derived from the slug with a small FNV-1a hash, then
+relaxed apart until no two are closer than `radarGeometry.minGap`. That means
+positions are identical on the server and in the browser, stable between
+builds, and an entry only moves when its ring or quadrant changes. Position
+*within* a ring carries no meaning — it exists so the labels do not collide.
 
 ### Navigation
 
