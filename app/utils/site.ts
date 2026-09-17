@@ -34,6 +34,9 @@ export const readingOrder: SiteLink[] = [
   { to: '/ai-data', label: 'AI & Data' },
   { to: '/ai-data/models', label: 'Local models' },
   { to: '/ai-data/data-lake', label: 'Data lake' },
+  { to: '/ai-data/data-lake/layers', label: 'Lake layers' },
+  { to: '/ai-data/data-lake/contracts', label: 'Data contracts' },
+  { to: '/ai-data/data-lake/schema', label: 'Schema registry' },
   { to: '/ai-data/agents', label: 'Agents' },
   { to: '/ai-data/mcp', label: 'MCP' },
   { to: '/ai-data/stores', label: 'Data stores' },
@@ -51,6 +54,13 @@ export const aiDataPages: SiteLink[] = [
   { to: '/ai-data/stores', label: 'Data stores' },
 ]
 
+/** The data lake, which is three flows rather than one. */
+export const dataLakePages: SiteLink[] = [
+  { to: '/ai-data/data-lake/layers', label: 'Layers' },
+  { to: '/ai-data/data-lake/contracts', label: 'Contracts' },
+  { to: '/ai-data/data-lake/schema', label: 'Schema' },
+]
+
 export interface SiteSection {
   hub: SiteLink
   /** Pages under the hub, in reading order. */
@@ -64,11 +74,23 @@ export interface SiteSection {
  */
 export const sections: SiteSection[] = [
   { hub: { to: '/ai-data', label: 'AI & Data' }, links: aiDataPages },
+  { hub: { to: '/ai-data/data-lake', label: 'Data lake' }, links: dataLakePages },
 ]
 
-/** The section a path belongs to, hub included. */
+/**
+ * Every section a path sits inside, outermost first. Sections nest, so a page
+ * two levels down belongs to both — and gets a bar and a breadcrumb entry for
+ * each.
+ */
+export function sectionChain(path: string): SiteSection[] {
+  return sections
+    .filter(s => path === s.hub.to || path.startsWith(`${s.hub.to}/`))
+    .sort((a, b) => a.hub.to.length - b.hub.to.length)
+}
+
+/** The innermost section a path belongs to, hub included. */
 export function sectionFor(path: string): SiteSection | undefined {
-  return sections.find(s => path === s.hub.to || path.startsWith(`${s.hub.to}/`))
+  return sectionChain(path).at(-1)
 }
 
 /** True when a nav link is the current page, or an ancestor of it. */

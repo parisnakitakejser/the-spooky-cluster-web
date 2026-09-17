@@ -188,7 +188,11 @@ app/
     projects/[slug].vue one page per project, pre-rendered from the data
     ai-data/index.vue  section hub — the local-only rule and what is in it
     ai-data/models.vue local models, quantisation, the empty GPU slot
-    ai-data/data-lake.vue  three chain diagrams: layers, contracts, schema
+    ai-data/data-lake/     nested section — a hub and three flows
+      index.vue            the three, and the substrate under them
+      layers.vue           the layered flow and the replayable buffer
+      contracts.vue        quality gates and what happens to rejects
+      schema.vue           the registry, and compatibility direction
     ai-data/agents.vue loops with credentials, and how they are contained
     ai-data/mcp.vue    handing a model a tool, and the sharp edges
     ai-data/stores.vue the databases, the bus, and the path a file takes
@@ -282,10 +286,12 @@ don't do half and half.
 ### Sections
 
 A page joins a section by being listed in `sections` in `app/utils/site.ts` —
-nothing is wired up per page. From that one registry:
+nothing is wired up per page. Sections nest: `/ai-data/data-lake` is a section
+inside `/ai-data`, and a page below it gets a row and a breadcrumb entry for
+each. From that one registry:
 
-- `SectionBar` renders the second-level nav under the header, on every page
-  in the section, with the current one underlined;
+- `SectionBar` renders one nav row per section the page sits inside, with the
+  current page underlined solid and an ancestor tab underlined dotted;
 - `PageHead` puts the hub in the breadcrumb, so a child reads
   `home / ai & data / mcp`;
 - `SiteHeader` marks the parent `aria-current="location"` with a dotted

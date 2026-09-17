@@ -113,14 +113,17 @@
 }
 
 
-// ---------- section bar ----------
-// Second-level navigation. Sits between the top bar and the page so the
-// hierarchy is visible rather than implied.
+// ---------- section bars ----------
+// Second-level navigation, one row per section the page sits inside. Sits
+// between the top bar and the page so the hierarchy is visible rather than
+// implied.
+.secbars { margin-bottom: 4px; }
+
 .secbar {
   display: flex;
   align-items: center;
   gap: 18px;
-  margin: 0 0 4px;
+  margin: 0;
   padding: 14px 0 0;
   border-bottom: 1px solid var(--line);
   position: relative;
@@ -134,6 +137,25 @@
     width: 40px;
     height: 1px;
     background: $pink;
+  }
+
+  // A nested row is subordinate to the one above it: indented, quieter, and
+  // without the pink rule, which belongs to the outermost section.
+  &.deep {
+    padding-top: 10px;
+    padding-left: 22px;
+
+    &::before { display: none; }
+
+    .secbar-link {
+      font-size: 13px;
+      padding-bottom: 10px;
+    }
+
+    .secbar-name {
+      font-size: 12px;
+      padding-bottom: 10px;
+    }
   }
 }
 
@@ -179,6 +201,12 @@
     color: var(--ink);
     border-bottom-color: $pink;
   }
+
+  // The tab whose own section you are currently inside.
+  &.within {
+    color: var(--ink);
+    border-bottom: 2px dotted rgba(255, 79, 163, .6);
+  }
 }
 
 @include narrow {
@@ -186,6 +214,8 @@
     flex-direction: column;
     align-items: stretch;
     gap: 6px;
+
+    &.deep { padding-left: 14px; }
   }
 
   .secbar-name { padding-bottom: 0; }

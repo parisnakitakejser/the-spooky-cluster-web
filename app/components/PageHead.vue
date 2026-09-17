@@ -8,11 +8,12 @@ defineProps<{
 
 const route = useRoute()
 
-/** A page inside a section gets its hub in the trail, between home and itself. */
-const parent = computed(() => {
-  const section = sectionFor(route.path)
-  return section && section.hub.to !== route.path ? section.hub : undefined
-})
+/** Every hub above this page, outermost first, so the trail is complete. */
+const parents = computed(() =>
+  sectionChain(route.path)
+    .filter(s => s.hub.to !== route.path)
+    .map(s => s.hub),
+)
 </script>
 
 <template>
@@ -21,8 +22,8 @@ const parent = computed(() => {
     <p class="crumb">
       <NuxtLink to="/">home</NuxtLink>
       <span class="sep">/</span>
-      <template v-if="parent">
-        <NuxtLink :to="parent.to">{{ parent.label.toLowerCase() }}</NuxtLink>
+      <template v-for="p in parents" :key="p.to">
+        <NuxtLink :to="p.to">{{ p.label.toLowerCase() }}</NuxtLink>
         <span class="sep">/</span>
       </template>
       {{ crumb }}
