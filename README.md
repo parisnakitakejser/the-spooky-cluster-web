@@ -200,7 +200,8 @@ app/
     ai-data/mcp.vue    handing a model a tool, and the sharp edges
     ai-data/stores.vue the databases, the bus, and the path a file takes
     observability.vue  metrics, logs, and the rules allowed to wake me
-    radar/index.vue    the tech radar chart and the text version of it
+    radar/index.vue    the chart, the sector cards and an A-Z index
+    radar/sector/[id].vue  one page per sector, with the annotated lists
     radar/[slug].vue   one page per tool, pre-rendered from the data
     log.vue            build log and incidents, newest first
   components/
@@ -208,7 +209,8 @@ app/
     PageHead ZoneChip StatGrid DataTable       content blocks
     GhostEmblem GhostMini Ghost<Page>          the SVG ghosts
     SecurityChain                              the zone diagram
-    RadarChart RadarLegend                     the radar and its numbered list
+    RadarBoard                                 chart + numbered key, one hover state
+    RadarChart RadarIndex RadarLegend          the radar's three views
     FlowChain SecurityChain                    the chain diagrams
     SectionBar                                 second-level nav, from the registry
     PhotoGrid                                  photo figures, blank until filled
@@ -425,6 +427,11 @@ it gets the widest band.
 
 The rings are Adopt, Trial, Research and Hold. Research is the usual radar's
 Assess: read the docs, maybe built a toy, nothing running.
+
+`RadarBoard` places the blips once and hands the same array to the chart and
+to the numbered key, so the numbering cannot drift between them. It owns the
+hover state, which is why hovering either side highlights both and raises a
+tooltip on the chart.
 
 Blip positions are derived from the slug with a small FNV-1a hash, then
 relaxed apart until no two are closer than `radarGeometry.minGap`, clamping

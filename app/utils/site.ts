@@ -2,6 +2,7 @@
 // the server side, where Nuxt's auto-imports do not apply.
 import { networkAreas } from './networks'
 import { rackGroups } from './rack'
+import { radarQuadrants } from './radar'
 
 export interface SiteLink {
   to: string
@@ -12,6 +13,12 @@ export interface SiteLink {
 export const rackGroupLinks: SiteLink[] = rackGroups.map(g => ({
   to: `/rack/${g.slug}`,
   label: g.name,
+}))
+
+/** One link per radar sector. */
+export const radarSectorLinks: SiteLink[] = radarQuadrants.map(q => ({
+  to: `/radar/sector/${q.id}`,
+  label: q.name,
 }))
 
 /** One link per network area, derived so a new area appears everywhere. */
@@ -62,6 +69,7 @@ export const readingOrder: SiteLink[] = [
   { to: '/ai-data/stores', label: 'Data stores' },
   { to: '/observability', label: 'Observability' },
   { to: '/radar', label: 'Tech radar' },
+  ...radarSectorLinks,
   { to: '/log', label: 'Build log' },
 ]
 
@@ -96,6 +104,7 @@ export interface SiteSection {
 export const sections: SiteSection[] = [
   { hub: { to: '/rack', label: 'Rack' }, links: rackGroupLinks },
   { hub: { to: '/network', label: 'Network' }, links: networkAreaLinks },
+  { hub: { to: '/radar', label: 'Tech radar' }, links: radarSectorLinks },
   { hub: { to: '/ai-data', label: 'AI & Data' }, links: aiDataPages },
   { hub: { to: '/ai-data/data-lake', label: 'Data lake' }, links: dataLakePages },
 ]
