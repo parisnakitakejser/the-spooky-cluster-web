@@ -1,0 +1,12 @@
+// ============================================================
+//  THE SPOOKY CLUSTER — stylesheet entry point
+//  Tokens are injected into every .scss file by nuxt.config.ts,
+//  so partials below never need to @use them explicitly.
+// ============================================================
+
+@use "base";
+@use "rail";
+@use "header";
+@use "page-head";
+@use "content";
+@use "animation";

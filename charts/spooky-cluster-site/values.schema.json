@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "spooky-cluster-site values",
+  "description": "Typed guard rails. The security-relevant fields are constrained so a typo weakens nothing silently.",
+  "type": "object",
+  "required": ["image", "containerPort", "podSecurityContext", "securityContext", "networkPolicy"],
+  "properties": {
+    "replicaCount": { "type": "integer", "minimum": 1 },
+    "image": {
+      "type": "object",
+      "required": ["repository", "pullPolicy"],
+      "properties": {
+        "repository": { "type": "string", "minLength": 1 },
+        "tag": { "type": "string" },
+        "digest": {
+          "type": "string",
+          "pattern": "^$|^sha256:[a-f0-9]{64}$",
+          "description": "Empty, or a full sha256 digest."
+        },
+        "pullPolicy": { "enum": ["Always", "IfNotPresent", "Never"] }
+      }
+    },
+    "serviceAccount": {
+      "type": "object",
+      "properties": {
+        "create": { "type": "boolean" },
+        "name": { "type": "string" },
+        "automountServiceAccountToken": {
+          "const": false,
+          "description": "The pod never calls the API server. Mounting a token would only add an attack path."
+        }
+      }
+    },
+    "containerPort": {
+      "type": "integer",
+      "minimum": 1024,
+      "maximum": 65535,
+      "description": "Unprivileged only, so the container never needs NET_BIND_SERVICE."
+    },
+    "podSecurityContext": {
+      "type": "object",
+      "required": ["runAsNonRoot", "runAsUser", "seccompProfile"],
+      "properties": {
+        "runAsNonRoot": { "const": true },
+        "runAsUser": { "type": "integer", "minimum": 1 },
+        "runAsGroup": { "type": "integer", "minimum": 1 },
+        "seccompProfile": {
+          "type": "object",
+          "properties": {
+            "type": { "enum": ["RuntimeDefault", "Localhost"] }
+          }
+        }
+      }
+    },
+    "securityContext": {
+      "type": "object",
+      "required": [
+        "allowPrivilegeEscalation",
+        "readOnlyRootFilesystem",
+        "runAsNonRoot",
+        "capabilities"
+      ],
+      "properties": {
+        "privileged": { "const": false },
+        "allowPrivilegeEscalation": { "const": false },
+        "readOnlyRootFilesystem": { "const": true },
+        "runAsNonRoot": { "const": true },
+        "runAsUser": { "type": "integer", "minimum": 1 },
+        "runAsGroup": { "type": "integer", "minimum": 1 },
+        "capabilities": {
+          "type": "object",
+          "required": ["drop"],
+          "properties": {
+            "drop": {
+              "type": "array",
+              "contains": { "const": "ALL" }
+            },
+            "add": {
+              "type": "array",
+              "maxItems": 0,
+              "description": "Nothing here needs a capability."
+            }
+          }
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "required": ["requests", "limits"],
+      "properties": {
+        "requests": { "type": "object" },
+        "limits": {
+          "type": "object",
+          "required": ["cpu", "memory"],
+          "description": "Always bounded, so one pod cannot starve a node."
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["ClusterIP", "NodePort", "LoadBalancer"] },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 }
+      }
+    },
+    "httpRoute": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "apiVersion": {
+          "enum": [
+            "gateway.networking.k8s.io/v1",
+            "gateway.networking.k8s.io/v1beta1"
+          ]
+        },
+        "parentRefs": { "type": "array", "minItems": 1 },
+        "hostnames": { "type": "array", "items": { "type": "string" } },
+        "rules": { "type": "array", "minItems": 1 }
+      }
+    },
+    "networkPolicy": {
+      "type": "object",
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "allowFrom": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "required": ["namespace"],
+            "properties": {
+              "namespace": { "type": "string", "minLength": 1 },
+              "podSelector": { "type": "object" }
+            }
+          }
+        },
+        "denyEgress": { "type": "boolean" },
+        "allowDNS": { "type": "boolean" }
+      }
+    },
+    "podDisruptionBudget": { "type": "object" },
+    "autoscaling": { "type": "object" },
+    "pod": { "type": "object" },
+    "tmpDir": { "type": "object" }
+  }
+}

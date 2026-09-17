@@ -1,0 +1,61 @@
+{{- if .Values.networkPolicy.enabled }}
+# This site is public, so it lives in the DMZ namespace's traffic path.
+# It talks to nothing. Denying egress keeps a compromised pod useless: no
+# reverse shell, no pivot, no exfiltration path.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "spooky-cluster-site.fullname" . }}
+  labels:
+    {{- include "spooky-cluster-site.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "spooky-cluster-site.selectorLabels" . | nindent 6 }}
+  policyTypes:
+    - Ingress
+    - Egress
+  {{- if not .Values.networkPolicy.allowFrom }}
+  # No sources allowed — nothing can reach the pod at all.
+  ingress: []
+  {{- else }}
+  ingress:
+    - from:
+        {{- range .Values.networkPolicy.allowFrom }}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ .namespace }}
+          {{- with .podSelector }}
+          podSelector:
+            matchLabels:
+              {{- toYaml . | nindent 14 }}
+          {{- end }}
+        {{- end }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.containerPort }}
+  {{- end }}
+  {{- if and .Values.networkPolicy.denyEgress (not .Values.networkPolicy.allowDNS) }}
+  # Nothing outbound at all, DNS included.
+  egress: []
+  {{- else }}
+  egress:
+    {{- if .Values.networkPolicy.allowDNS }}
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    {{- end }}
+    {{- if not .Values.networkPolicy.denyEgress }}
+    - {}
+    {{- end }}
+  {{- end }}
+{{- end }}

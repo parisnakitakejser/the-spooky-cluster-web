@@ -1,0 +1,201 @@
+@use "sass:math";
+@use "tokens" as *;
+
+// ============================================================
+//  Animation
+//  The emblem draws itself once on load, then hands over to a
+//  permanent idle loop at 4.6s.
+//
+//  If you change the number of LED dots in the ring, change the
+//  chase spacing with it: duration / dot count must equal the
+//  per-dot delay, or the lap visibly stutters where it restarts.
+//  Currently 2.4s across 20 dots at 120ms.
+// ============================================================
+
+$emblem-dots: 20;
+$emblem-chase: 2.4s;
+$emblem-idle: 4600ms;
+
+#emblem {
+  .ring1 {
+    stroke-dasharray: 1131;
+    stroke-dashoffset: 1131;
+    animation: draw 900ms ease-out forwards;
+  }
+
+  .ring2 {
+    stroke-dasharray: 955;
+    stroke-dashoffset: 955;
+    animation: draw 800ms 300ms ease-out forwards;
+  }
+
+  .dot {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pop 320ms ease-out forwards, chase $emblem-chase linear infinite;
+    animation-delay:
+      calc(600ms + var(--i) * 45ms),
+      calc(#{$emblem-idle} + var(--i) * #{math.div($emblem-chase, $emblem-dots)});
+  }
+
+  .gline {
+    stroke-dasharray: 780;
+    stroke-dashoffset: 780;
+    animation: draw 1200ms 1150ms ease-out forwards;
+  }
+
+  .gfill {
+    opacity: 0;
+    animation: fade 700ms 1900ms ease-out forwards;
+  }
+
+  .eye {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pop 340ms ease-out forwards, eyeblink 6.5s ease-in-out infinite;
+    animation-delay: calc(2300ms + var(--i) * 110ms), 5200ms;
+  }
+
+  .ghost {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bob 5.2s 1900ms ease-in-out infinite;
+  }
+
+  .panel {
+    opacity: 0;
+    animation: fade 400ms 2500ms ease-out forwards;
+  }
+
+  .rrow {
+    opacity: 0;
+    animation: slidein 440ms ease-out forwards;
+    animation-delay: calc(2650ms + var(--i) * 130ms);
+  }
+
+  .railbits {
+    opacity: 0;
+    animation: fade 500ms 3350ms ease-out forwards;
+  }
+
+  .hex {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pop 400ms ease-out forwards, hexpulse 4.4s ease-in-out infinite;
+    animation-delay: calc(3500ms + var(--i) * 90ms), calc(5000ms + var(--i) * 550ms);
+  }
+
+  .pulse {
+    animation: blink 1.9s ease-in-out infinite;
+    animation-delay: calc(#{$emblem-idle} + var(--i) * 160ms);
+  }
+}
+
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+@keyframes pop {
+  0%   { opacity: 0; transform: scale(.2); }
+  70%  { opacity: 1; transform: scale(1.18); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fade { to { opacity: 1; } }
+
+@keyframes slidein {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+
+// idle loops — these never stop
+@keyframes chase {
+  0%   { opacity: .3; transform: scale(.85); }
+  6%   { opacity: 1;  transform: scale(1.4); }
+  22%  { opacity: .3; transform: scale(.85); }
+  100% { opacity: .3; transform: scale(.85); }
+}
+
+@keyframes eyeblink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.06); } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes hexpulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+@keyframes minibob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px); } }
+@keyframes ledflick { 0%, 100% { opacity: 1; } 45% { opacity: .2; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes scan { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(24px); } }
+
+// the small header ghost — styled by position, so no page markup changes
+.mini {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: minibob 3.6s ease-in-out infinite;
+
+  circle {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: eyeblink 5.5s ease-in-out infinite;
+  }
+
+  rect:nth-of-type(1) { animation: ledflick 1.7s ease-in-out infinite; }
+  rect:nth-of-type(2) { animation: ledflick 2.3s ease-in-out infinite; animation-delay: .6s; }
+}
+
+// ---------- per-page ghost icons ----------
+.pgh {
+  position: absolute;
+  right: 0;
+  top: 46px;
+  width: 92px;
+  height: 92px;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: minibob 4.2s ease-in-out infinite;
+
+  .eyes circle {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: eyeblink 6.2s ease-in-out infinite;
+  }
+
+  .seq { animation: ledflick 2.2s ease-in-out infinite; animation-delay: calc(var(--i) * 260ms); }
+
+  .spin {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: spin 6s linear infinite;
+  }
+
+  .orbit {
+    transform-box: view-box;
+    transform-origin: 50px 64px;
+    animation: spin 5s linear infinite;
+  }
+
+  .scan {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: scan 3.4s ease-in-out infinite;
+  }
+
+  .cur { animation: ledflick 1.1s steps(1) infinite; }
+
+  @include narrow { width: 62px; height: 62px; top: 30px; }
+}
+
+@include reduced-motion {
+  html { scroll-behavior: auto; }
+
+  #emblem *,
+  .mini, .mini *,
+  .pgh, .pgh * {
+    animation: none !important;
+    opacity: 1 !important;
+    stroke-dashoffset: 0 !important;
+    transform: none !important;
+  }
+
+  .card:hover { transform: none; }
+}

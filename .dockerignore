@@ -1,0 +1,9 @@
+node_modules
+.nuxt
+.output
+.git
+.gitignore
+charts
+README.md
+Dockerfile
+.dockerignore

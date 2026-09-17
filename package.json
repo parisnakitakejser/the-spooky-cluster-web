@@ -1,0 +1,21 @@
+{
+  "name": "the-spooky-cluster-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A static site documenting a 42U homelab near Aarhus.",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "start": "node .output/server/index.mjs",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "nuxt": "^4.0.0",
+    "sass-embedded": "^1.83.0",
+    "vue": "^3.5.0",
+    "vue-router": "^4.5.0"
+  }
+}

@@ -1,0 +1,366 @@
+@use "sass:map";
+@use "tokens" as *;
+
+// ---------- chips ----------
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--cab);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px 6px 10px;
+  font: 500 12px #{$mono};
+  color: var(--dim);
+
+  i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: none;
+  }
+
+  @each $key, $zone in $zones {
+    $c: map.get($zone, color);
+
+    &.#{$key} {
+      color: $c;
+      i { box-shadow: 0 0 8px $c; }
+    }
+  }
+}
+
+a.chip {
+  border-bottom: 1px solid var(--line);
+
+  &:hover { border-color: currentColor; }
+}
+
+// ---------- unit sections ----------
+.unit {
+  position: relative;
+  background: var(--cab);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 40px 44px;
+  margin: 0 0 20px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: 28px;
+    bottom: 28px;
+    width: 4px;
+    border-radius: 4px;
+    background: var(--tag, var(--line));
+    box-shadow: 0 0 14px var(--tag, transparent);
+  }
+
+  @each $key, $zone in $zones {
+    &[data-zone="#{map.get($zone, name)}"] { --tag: var(--#{map.get($zone, name)}); }
+  }
+
+  h2 {
+    font: 400 clamp(24px, 3vw, 32px)/1.15 #{$display};
+    letter-spacing: -.02em;
+    margin: 0 0 10px;
+  }
+
+  h3 {
+    font: 500 16px #{$sans};
+    margin: 32px 0 12px;
+  }
+
+  > p {
+    color: var(--dim);
+    max-width: 62ch;
+    margin: 0 0 28px;
+  }
+
+  p + .rows,
+  p + .stats,
+  p + .flow,
+  p + .scroll-x { margin-top: 0; }
+
+  @include narrow { padding: 30px 24px; }
+}
+
+.u-slot {
+  font: 500 11px #{$mono};
+  color: var(--faint);
+  letter-spacing: .08em;
+  margin: 0 0 6px;
+}
+
+// ---------- device rows ----------
+.rows { border-top: 1px solid var(--line); }
+
+.row {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1.5fr) minmax(0, 2fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  transition: background .12s ease;
+
+  &:hover { background: rgba(59, 45, 99, .22); }
+
+  .u { font: 500 12px #{$mono}; color: var(--faint); }
+  .n { font: 500 15px #{$sans}; }
+  .d { font: 400 13px #{$mono}; color: var(--dim); overflow-wrap: anywhere; }
+
+  .t {
+    font: 500 11px #{$mono};
+    letter-spacing: .05em;
+    padding: 3px 9px;
+    border-radius: 4px;
+    white-space: nowrap;
+    border: 1px solid currentColor;
+  }
+
+  &.empty {
+    opacity: .42;
+
+    .n { font: 400 13px #{$mono}; color: var(--faint); }
+  }
+
+  @include narrow {
+    grid-template-columns: 44px 1fr auto;
+    row-gap: 4px;
+
+    .d { grid-column: 2 / -1; }
+  }
+}
+
+.t {
+  @each $key, $zone in $zones {
+    &.#{$key} { color: map.get($zone, color); }
+  }
+
+  &.x { color: var(--faint); }
+}
+
+// ---------- stats ----------
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.stat {
+  background: var(--cab);
+  padding: 20px 22px;
+
+  b {
+    display: block;
+    font: 500 28px/1.1 #{$mono};
+    letter-spacing: -.02em;
+    margin-bottom: 4px;
+  }
+
+  span { font: 400 13px #{$sans}; color: var(--dim); }
+
+  @each $key, $zone in $zones {
+    &.#{$key} b { color: map.get($zone, color); }
+  }
+}
+
+// ---------- zones ----------
+.flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.zone {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--zc, var(--line));
+  border-radius: 0 8px 8px 0;
+  padding: 18px 20px;
+  background: var(--rail);
+
+  h3 {
+    font: 500 15px #{$sans};
+    margin: 0 0 6px;
+    color: var(--zc, var(--ink));
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+
+  code { font: 400 12px #{$mono}; color: var(--faint); }
+}
+
+// ---------- tables ----------
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font: 400 13px #{$mono};
+
+  th {
+    text-align: left;
+    font: 500 11px #{$mono};
+    letter-spacing: .07em;
+    color: var(--faint);
+    padding: 0 14px 10px 0;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 11px 14px 11px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--dim);
+    vertical-align: top;
+
+    &:first-child { color: var(--ink); font-weight: 500; }
+  }
+}
+
+.scroll-x { overflow-x: auto; }
+
+// ---------- prose ----------
+.prose {
+  max-width: 66ch;
+  color: var(--dim);
+
+  p { margin: 0 0 18px; }
+  strong { color: var(--ink); font-weight: 500; }
+
+  code {
+    font: 400 13px #{$mono};
+    background: var(--rail);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--ink);
+  }
+
+  ul { padding-left: 20px; margin: 0 0 18px; }
+  li { margin-bottom: 8px; }
+  li::marker { color: var(--faint); }
+
+  &.spaced { margin-top: 22px; }
+}
+
+// ---------- log entries ----------
+.log { border-top: 1px solid var(--line); }
+
+.entry {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+
+  time {
+    font: 500 12px #{$mono};
+    color: var(--faint);
+    padding-top: 4px;
+  }
+
+  h3 { font: 500 17px #{$sans}; margin: 0 0 8px; }
+
+  p {
+    margin: 0;
+    color: var(--dim);
+    font-size: 15px;
+    max-width: 62ch;
+  }
+
+  @include narrow { grid-template-columns: 1fr; gap: 6px; }
+}
+
+// ---------- index cards ----------
+.deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  display: block;
+  background: var(--cab);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--zc, var(--line));
+  border-radius: 0 8px 8px 0;
+  padding: 22px 24px;
+  transition: border-color .14s ease, transform .14s ease;
+
+  &:hover {
+    border-color: var(--zc, var(--line));
+    transform: translateY(-2px);
+  }
+
+  h3 {
+    font: 500 17px #{$sans};
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--dim);
+  }
+
+  .meta {
+    display: block;
+    margin-top: 12px;
+    font: 500 11px #{$mono};
+    letter-spacing: .06em;
+    color: var(--zc, var(--faint));
+  }
+}
+
+// ---------- security zone diagram ----------
+.diag {
+  background: var(--rail);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  overflow-x: auto;
+
+  svg {
+    min-width: 660px;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+.legend {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  font: 400 12px #{$mono};
+  color: var(--faint);
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  i {
+    width: 18px;
+    height: 0;
+    border-top: 2px solid currentColor;
+    display: block;
+
+    &.dash { border-top-style: dashed; }
+  }
+}

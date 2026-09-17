@@ -1,0 +1,105 @@
+@use "tokens" as *;
+
+// ---------- top bar ----------
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  background: rgba(11, 7, 21, .88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.top-in {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 60px;
+  max-width: $shell-max;
+  margin: 0 auto;
+  padding: 0 $shell-pad;
+
+  @include narrow { padding: 0 $shell-pad-narrow; }
+}
+
+.top-name {
+  font: 500 17px/1 #{$display};
+  letter-spacing: -.01em;
+  margin-right: auto;
+  color: var(--ink);
+  border: 0;
+}
+
+.top-link {
+  font: 400 14px #{$sans};
+  color: var(--dim);
+  border: 0;
+  white-space: nowrap;
+
+  &:hover { color: var(--ink); }
+
+  &[aria-current="page"] {
+    color: var(--ink);
+    border-bottom: 2px solid $pink;
+    padding-bottom: 2px;
+  }
+}
+
+.mini {
+  width: 26px;
+  height: 26px;
+  flex: none;
+}
+
+.top-scroll {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+// ---------- footer ----------
+.foot {
+  padding: 56px 0 72px;
+  color: var(--faint);
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+
+  a {
+    color: var(--dim);
+    border-bottom-color: rgba(156, 143, 181, .3);
+  }
+}
+
+// ---------- pager ----------
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+
+  a {
+    font: 400 14px #{$sans};
+    color: var(--dim);
+    border: 0;
+
+    &:hover { color: var(--ink); }
+  }
+
+  span {
+    font: 500 11px #{$mono};
+    letter-spacing: .07em;
+    color: var(--faint);
+    display: block;
+    margin-bottom: 3px;
+  }
+}

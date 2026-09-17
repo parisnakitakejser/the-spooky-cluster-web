@@ -1,0 +1,55 @@
+{{ .Chart.Name }} {{ .Chart.Version }} installed as {{ .Release.Name }} in namespace {{ .Release.Namespace }}.
+
+Pods: {{ if .Values.autoscaling.enabled }}{{ .Values.autoscaling.minReplicas }}–{{ .Values.autoscaling.maxReplicas }} (autoscaled){{ else }}{{ .Values.replicaCount }}{{ end }}
+Image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+
+Reach it:
+{{- if .Values.httpRoute.enabled }}
+{{- range .Values.httpRoute.hostnames }}
+  https://{{ . }}
+{{- end }}
+
+  Attached to {{ range $i, $p := .Values.httpRoute.parentRefs }}{{ if $i }}, {{ end }}{{ $p.name }}{{ with $p.namespace }} in {{ . }}{{ end }}{{ with $p.sectionName }} (listener {{ . }}){{ end }}{{ end }}.
+  Check it was accepted:
+
+    kubectl -n {{ .Release.Namespace }} get httproute {{ include "spooky-cluster-site.fullname" . }} -o jsonpath='{.status.parents[*].conditions[*].reason}{"\n"}'
+
+  A cross-namespace attachment only works if that Gateway's listener allows
+  routes from {{ .Release.Namespace }}. TLS belongs to the listener, not here.
+{{- else }}
+  No HTTPRoute — nothing is routing to this yet. Point your gateway at:
+
+    service: {{ include "spooky-cluster-site.fullname" . }}.{{ .Release.Namespace }}.svc
+    port:    {{ .Values.service.port }} (name: http)
+{{- end }}
+
+Or check it locally, bypassing the gateway:
+
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "spooky-cluster-site.fullname" . }} 8080:{{ .Values.service.port }}
+  curl http://127.0.0.1:8080/healthz
+
+Hardening in force:
+  - non-root uid {{ .Values.podSecurityContext.runAsUser }}, read-only root filesystem, all capabilities dropped
+  - seccomp RuntimeDefault{{ with .Values.podSecurityContext.appArmorProfile }}, AppArmor {{ .type }}{{ end }}
+  - no service account token mounted
+{{- if .Values.networkPolicy.enabled }}
+  - only {{ range $i, $f := .Values.networkPolicy.allowFrom }}{{ if $i }}, {{ end }}{{ $f.namespace }}{{ with $f.podSelector }} (selected pods){{ end }}{{ else }}nothing{{ end }} may reach the pods
+  {{- if and .Values.networkPolicy.denyEgress (not .Values.networkPolicy.allowDNS) }}
+  - all egress denied, DNS included
+  {{- else if .Values.networkPolicy.denyEgress }}
+  - egress denied except DNS
+  {{- else }}
+  - WARNING: egress is open (networkPolicy.denyEgress=false)
+  {{- end }}
+{{- else }}
+  - WARNING: no NetworkPolicy (networkPolicy.enabled=false)
+{{- end }}
+{{ if .Values.networkPolicy.enabled }}
+The allowed namespaces have to include the one your gateway runs in, or the
+route will attach and then time out.
+{{- end }}
+Enforce the restricted Pod Security Standard on the namespace, if you have not:
+
+  kubectl label --overwrite ns {{ .Release.Namespace }} \
+    pod-security.kubernetes.io/enforce=restricted \
+    pod-security.kubernetes.io/enforce-version=latest

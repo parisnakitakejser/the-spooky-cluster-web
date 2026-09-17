@@ -1,0 +1,204 @@
+# Default values for spooky-cluster-site.
+#
+# The site is a Nuxt build pre-rendered at image build time and served by
+# Nitro's node server. It reads nothing, writes nothing, and talks to nothing,
+# so the defaults here are locked down hard on purpose: no service account
+# token, no egress, no writable filesystem, no capabilities. Loosen a setting
+# only when something actually breaks without it.
+#
+# The rendered pod satisfies the Pod Security Standards `restricted` profile.
+# Enforce it on the namespace too — see the README.
+
+replicaCount: 2
+
+image:
+  # CHANGE ME: point at your own registry
+  repository: registry.local/spooky-cluster
+  # Defaults to .Chart.AppVersion ("1.0.0") when empty. Build the image with a
+  # matching tag, or override with --set image.tag=...
+  tag: ""
+  # Strongest option: pin by digest. Wins over tag when set.
+  # digest: "sha256:..."
+  digest: ""
+  # Always is deliberate with a mutable tag; IfNotPresent is fine with a digest.
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # A dedicated account, so the pod is not sharing the namespace `default`
+  # account with everything else.
+  create: true
+  name: ""
+  # Nothing in the pod talks to the API server, so it gets no token.
+  automountServiceAccountToken: false
+
+podAnnotations: {}
+podLabels: {}
+
+pod:
+  # No implicit env vars for every Service in the namespace.
+  enableServiceLinks: false
+  terminationGracePeriodSeconds: 30
+  priorityClassName: ""
+  # Set to false on Kubernetes >= 1.33 to run in its own user namespace, so
+  # uid 1000 in the pod is not uid 1000 on the node. Leave null to omit.
+  hostUsers: null
+  dnsPolicy: ClusterFirst
+
+# Pod-level. Everything here is also repeated per container, because a
+# container context silently overrides the pod one and being explicit in both
+# places means a future container cannot inherit something weaker.
+podSecurityContext:
+  runAsNonRoot: true
+  # the `node` user in the node:22-alpine base image
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+  # Kubernetes >= 1.30. Harmless on older versions; drop the block if your API
+  # server rejects it.
+  appArmorProfile:
+    type: RuntimeDefault
+
+securityContext:
+  privileged: false
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - ALL
+
+# The port Nitro listens on inside the container. Deliberately > 1024, so the
+# process never needs NET_BIND_SERVICE. HOST and PORT are passed as env below.
+containerPort: 8080
+
+service:
+  type: ClusterIP
+  port: 80
+
+# Extra environment variables, appended after HOST and PORT. Keep secrets out
+# of here — this chart mounts none, and that is a feature.
+env: []
+  # - name: NUXT_PUBLIC_SOMETHING
+  #   value: "value"
+
+# The only writable path. Capped so a runaway process cannot fill the node.
+tmpDir:
+  sizeLimit: 16Mi
+
+resources:
+  # Nitro is a node process serving pre-rendered files, so it is mostly heap
+  # floor rather than per-request cost. Measured at ~34 MiB idle serving the
+  # whole site.
+  requests:
+    cpu: 25m
+    memory: 64Mi
+    ephemeral-storage: 32Mi
+  limits:
+    cpu: 500m
+    memory: 192Mi
+    ephemeral-storage: 128Mi
+
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    # Never drop below the replica count during a roll.
+    maxUnavailable: 0
+    maxSurge: 1
+
+revisionHistoryLimit: 3
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 30
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 2
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+startupProbe: {}
+
+# Gateway API. TLS and the listener live on the Gateway, not here — this only
+# attaches the site to one, so there is no certificate config in this chart.
+httpRoute:
+  enabled: true
+  # v1 is GA as of Gateway API 1.0. Older installs may need v1beta1.
+  apiVersion: gateway.networking.k8s.io/v1
+  annotations: {}
+  # CHANGE ME: the Gateway to attach to. Cross-namespace attachment also needs
+  # that Gateway's listener to allow routes from this namespace
+  # (spec.listeners[].allowedRoutes.namespaces).
+  parentRefs:
+    - name: public
+      namespace: gateway
+      sectionName: https
+  # CHANGE ME
+  hostnames:
+    - spooky.example.dk
+  # backendRefs default to this chart's Service on service.port when a rule
+  # does not set them.
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+
+# This site is public, so it lives in the DMZ namespace's traffic path.
+# It talks to nothing. Denying egress keeps a compromised pod useless: no
+# reverse shell, no pivot, no exfiltration path.
+networkPolicy:
+  enabled: true
+  # Who may reach the pod. Nothing else can, including other pods in this
+  # namespace. CHANGE ME to wherever your gateway runs — it must match
+  # httpRoute.parentRefs[].namespace, or the route attaches and then times out.
+  # Narrow it further with podSelector so the whole gateway namespace is not
+  # trusted.
+  allowFrom:
+    - namespace: gateway
+      # podSelector:
+      #   app.kubernetes.io/name: my-gateway
+  # Blocks everything outbound, DNS included. The site resolves nothing.
+  denyEgress: true
+  # Set true only if you add something that needs to resolve names.
+  allowDNS: false
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Spread replicas across nodes so one node dying is not the whole site.
+# labelSelector is filled in automatically when a constraint omits it.
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
