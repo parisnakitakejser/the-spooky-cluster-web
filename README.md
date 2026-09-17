@@ -193,6 +193,7 @@ app/
       layers.vue           the layered flow and the replayable buffer
       contracts.vue        quality gates and what happens to rejects
       schema.vue           the registry, and compatibility direction
+      governance.vue       a dataset's life: ownership, placement, audit
     ai-data/agents.vue loops with credentials, and how they are contained
     ai-data/mcp.vue    handing a model a tool, and the sharp edges
     ai-data/stores.vue the databases, the bus, and the path a file takes

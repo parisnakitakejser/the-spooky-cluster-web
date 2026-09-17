@@ -13,7 +13,7 @@ const glance = [
 
 const sections = [
   { to: '/ai-data/models', zone: 'prod', title: 'Local models', body: 'What is actually loaded, what quantisation costs, and why the first number on this page is zero.', meta: 'inference · quantisation · the GPU slot' },
-  { to: '/ai-data/data-lake', zone: 'mgmt', title: 'Data lake', body: 'Three flows, one page each: how a row moves through the layers, how a contract keeps quality honest, and how schema stays compatible.', meta: '3 pages · layers · contracts · schema' },
+  { to: '/ai-data/data-lake', zone: 'mgmt', title: 'Data lake', body: 'Four flows, one page each: the layers, quality by contract, schema compatibility, and who governs the whole thing.', meta: '4 pages · layers · contracts · schema · governance' },
   { to: '/ai-data/agents', zone: 'stage', title: 'Agents', body: 'Loops that call tools on my behalf. What they are allowed to touch, and what happens when one is wrong.', meta: 'loops · tools · blast radius' },
   { to: '/ai-data/mcp', zone: 'ceph', title: 'MCP', body: 'The protocol that hands a model a tool. A useful standard and a genuinely new attack surface.', meta: 'servers · scopes · injection' },
   { to: '/ai-data/stores', zone: 'dmz', title: 'Data stores', body: 'The databases and the bus underneath all of it, and which of them are worth backing up.', meta: 'postgres · cache · mqtt' },

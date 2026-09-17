@@ -26,13 +26,20 @@ const flows = [
     body: 'A versioned registry both ends resolve against, and a breaking change caught at publish rather than at read.',
     meta: 'registry · compatibility',
   },
+  {
+    to: '/ai-data/data-lake/governance',
+    zone: 'stage',
+    title: 'Governance and sovereignty',
+    body: 'A dataset\'s life rather than a row\'s journey: who owns it, who may read it, where it is allowed to physically be, and who holds the keys.',
+    meta: 'catalogue · placement · audit',
+  },
 ]
 </script>
 
 <template>
   <PageHead
     crumb="data lake"
-    heading="Three flows, because the layers are the boring part"
+    heading="Four flows, because the layers are the boring part"
     lede="What makes a lake work is not the layers, it is what governs each hop between them. Each flow below is one diagram and the argument behind it — drawn without product names, because the shape outlives whichever engine is currently filling each role."
   >
     <template #ghost><GhostAi /></template>
@@ -44,9 +51,9 @@ const flows = [
   </PageHead>
 
   <section class="unit" data-zone="mgmt">
-    <p class="u-slot">the three</p>
+    <p class="u-slot">the four</p>
     <h2>Read them in order the first time</h2>
-    <p>They build on each other: the layers give you somewhere to put data, contracts decide what is allowed in, and the schema registry keeps the two ends of a stream agreeing about shape while both are being changed by different people.</p>
+    <p>They build on each other: the layers give you somewhere to put data, contracts decide what is allowed in, the schema registry keeps the two ends of a stream agreeing about shape while both are being changed by different people, and governance decides who is allowed to do any of it and where the bytes may live.</p>
     <div class="deck">
       <NuxtLink
         v-for="flow in flows"

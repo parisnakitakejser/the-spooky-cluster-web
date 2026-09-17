@@ -37,6 +37,7 @@ export const readingOrder: SiteLink[] = [
   { to: '/ai-data/data-lake/layers', label: 'Lake layers' },
   { to: '/ai-data/data-lake/contracts', label: 'Data contracts' },
   { to: '/ai-data/data-lake/schema', label: 'Schema registry' },
+  { to: '/ai-data/data-lake/governance', label: 'Governance' },
   { to: '/ai-data/agents', label: 'Agents' },
   { to: '/ai-data/mcp', label: 'MCP' },
   { to: '/ai-data/stores', label: 'Data stores' },
@@ -59,6 +60,7 @@ export const dataLakePages: SiteLink[] = [
   { to: '/ai-data/data-lake/layers', label: 'Layers' },
   { to: '/ai-data/data-lake/contracts', label: 'Contracts' },
   { to: '/ai-data/data-lake/schema', label: 'Schema' },
+  { to: '/ai-data/data-lake/governance', label: 'Governance' },
 ]
 
 export interface SiteSection {
