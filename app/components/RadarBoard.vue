@@ -7,7 +7,18 @@
  * and wants the width, and sixty-six names read better as sector columns than
  * as one tall list.
  */
-const props = withDefaults(defineProps<{ active?: string | null }>(), { active: null })
+const props = withDefaults(defineProps<{
+  active?: string | null
+  /**
+   * The numbered key below the chart. Off on a sector page, which lists the
+   * same entries annotated by ring further down — one list per page is
+   * enough, and the ringed one says more.
+   */
+  showKey?: boolean
+}>(), {
+  active: null,
+  showKey: true,
+})
 
 const blips = placeBlips()
 const hovered = ref<string | null>(null)
@@ -89,7 +100,7 @@ function setHover(slug: string | null) {
       <span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 11 L11 2 L1 2 Z" /></svg>moved outward</span>
     </p>
 
-    <div class="rgroups">
+    <div v-if="showKey" class="rgroups">
       <div
         v-for="group in groups"
         :key="group.quadrant.id"

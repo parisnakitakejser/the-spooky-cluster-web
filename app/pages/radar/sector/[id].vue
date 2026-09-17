@@ -46,7 +46,7 @@ const others = computed(() => radarQuadrants.filter(q => q.id !== id.value))
       <p class="u-slot">in context</p>
       <h2>This slice of the whole radar</h2>
       <p>The rest is dimmed rather than removed, because where a sector sits relative to the others is part of what the chart is for.</p>
-      <RadarBoard :active="sector.id" />
+      <RadarBoard :active="sector.id" :show-key="false" />
     </section>
 
     <section
