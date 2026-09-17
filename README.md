@@ -186,7 +186,12 @@ app/
     about.vue          who runs it, photographs, what it hosts, the rules
     projects/index.vue things being built, grouped by status
     projects/[slug].vue one page per project, pre-rendered from the data
-    ai-data.vue        local models, the databases under them, the data path
+    ai-data/index.vue  section hub — the local-only rule and what is in it
+    ai-data/models.vue local models, quantisation, the empty GPU slot
+    ai-data/data-lake.vue  three chain diagrams: layers, contracts, schema
+    ai-data/agents.vue loops with credentials, and how they are contained
+    ai-data/mcp.vue    handing a model a tool, and the sharp edges
+    ai-data/stores.vue the databases, the bus, and the path a file takes
     observability.vue  metrics, logs, and the rules allowed to wake me
     radar/index.vue    the tech radar chart and the text version of it
     radar/[slug].vue   one page per tool, pre-rendered from the data
@@ -197,6 +202,8 @@ app/
     GhostEmblem GhostMini Ghost<Page>          the SVG ghosts
     SecurityChain                              the zone diagram
     RadarChart RadarLegend                     the radar and its numbered list
+    FlowChain SecurityChain                    the chain diagrams
+    SectionNav                                 sibling links within a section
     PhotoGrid                                  photo figures, blank until filled
     SiteError                                  the 404 / 500 body
   utils/site.ts        nav links and reading order
@@ -263,6 +270,22 @@ invented. Page content lives as plain arrays in each page's `<script setup>`
 object, not copying markup. The node names are themed (crypt, ossuary, séance,
 obelisk, lifeline) — replace them with your real ones or commit to them, but
 don't do half and half.
+
+### Chain diagrams
+
+`FlowChain` draws them: stages on a pitch, lanes above and below reaching
+into either the stage boxes or the gaps between them. Pass `stages`, `lanes`,
+an optional `substrate` band, and a `legend`. Geometry — box width, pitch,
+centring, canvas height — is derived from how many stages and lanes there
+are, so a diagram is a data structure rather than hand-placed coordinates.
+
+A lane's `direction: 'from'` reverses its arrows, for something that receives
+rather than governs. `offset` nudges where arrows land so two lanes can share
+a gap.
+
+These are deliberately unbranded. They describe shapes; which tool fills each
+role belongs on the radar, and swapping one should not mean redrawing a
+diagram.
 
 ### Photographs
 

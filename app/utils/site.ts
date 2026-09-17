@@ -32,9 +32,23 @@ export const readingOrder: SiteLink[] = [
   { to: '/security', label: 'Security' },
   { to: '/network', label: 'Network' },
   { to: '/ai-data', label: 'AI & Data' },
+  { to: '/ai-data/models', label: 'Local models' },
+  { to: '/ai-data/data-lake', label: 'Data lake' },
+  { to: '/ai-data/agents', label: 'Agents' },
+  { to: '/ai-data/mcp', label: 'MCP' },
+  { to: '/ai-data/stores', label: 'Data stores' },
   { to: '/observability', label: 'Observability' },
   { to: '/radar', label: 'Tech radar' },
   { to: '/log', label: 'Build log' },
+]
+
+/** The AI & Data section. The hub at /ai-data links to each of these. */
+export const aiDataPages: SiteLink[] = [
+  { to: '/ai-data/models', label: 'Local models' },
+  { to: '/ai-data/data-lake', label: 'Data lake' },
+  { to: '/ai-data/agents', label: 'Agents' },
+  { to: '/ai-data/mcp', label: 'MCP' },
+  { to: '/ai-data/stores', label: 'Data stores' },
 ]
 
 export const siteName = 'the spooky cluster'

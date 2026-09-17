@@ -546,3 +546,24 @@ a.chip {
     padding: 1px 5px;
   }
 }
+
+// ---------- section navigation ----------
+.subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 30px;
+
+  .chip {
+    color: var(--dim);
+    border-bottom: 1px solid var(--line);
+
+    &:hover { color: var(--ink); border-color: var(--faint); }
+
+    &.on {
+      color: var(--ink);
+      border-color: $pink;
+      background: var(--rail);
+    }
+  }
+}
