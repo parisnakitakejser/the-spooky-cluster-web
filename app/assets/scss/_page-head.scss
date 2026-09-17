@@ -1,0 +1,87 @@
+@use "tokens" as *;
+
+// ---------- home hero ----------
+.hero {
+  padding: 72px 0 88px;
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+
+  h1 {
+    font: 400 clamp(38px, 6vw, 64px)/1.02 #{$display};
+    font-variation-settings: "opsz" 80;
+    letter-spacing: -.025em;
+    margin: 0 0 20px;
+  }
+
+  p {
+    max-width: 52ch;
+    color: var(--dim);
+    font-size: 17px;
+    margin: 0 0 28px;
+  }
+
+  @include narrow {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 44px 0 56px;
+  }
+}
+
+.hero-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// ---------- sub-page header ----------
+.phead {
+  padding: 56px 0 40px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 40px;
+  position: relative;
+  padding-right: 118px;
+
+  h1 {
+    font: 400 clamp(32px, 5vw, 50px)/1.05 #{$display};
+    letter-spacing: -.025em;
+    margin: 0 0 16px;
+    max-width: 20ch;
+  }
+
+  .lede {
+    max-width: 60ch;
+    color: var(--dim);
+    font-size: 17px;
+    margin: 0;
+  }
+
+  .tagline {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+  }
+
+  @include narrow { padding: 36px 76px 28px 0; }
+}
+
+.crumb {
+  font: 500 11px #{$mono};
+  letter-spacing: .08em;
+  color: var(--faint);
+  margin: 0 0 14px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  a {
+    color: var(--faint);
+    border: 0;
+
+    &:hover { color: var(--dim); }
+  }
+
+  .sep { color: var(--line); }
+}

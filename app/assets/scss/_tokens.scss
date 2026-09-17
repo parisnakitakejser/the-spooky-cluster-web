@@ -1,0 +1,62 @@
+@use "sass:map";
+
+// ============================================================
+//  THE SPOOKY CLUSTER — design tokens
+//  Sass variables and maps only. This file is injected into
+//  every component stylesheet, so it must emit no CSS.
+//  Zone colours are the load-bearing tokens: change one here
+//  and the section edge tags, chips, stat numbers and table
+//  accents all follow.
+// ============================================================
+
+// ---------- surfaces ----------
+$void:  #0B0715;
+$cab:   #150E28;
+$rail:  #1E1636;
+$line:  #3B2D63;
+$ink:   #F3E8FF;
+$dim:   #9C8FB5;
+$faint: #6B5C8A;
+
+// ---------- the ghost ----------
+$pink: #FF4FA3;
+
+// ---------- zones ----------
+// Keyed by the short class suffix used in markup (`.chip.p`, `.stat.c`).
+$zones: (
+  p: (name: prod,  color: #22D3EE),
+  s: (name: stage, color: #A3E635),
+  m: (name: mgmt,  color: #FBBF24),
+  c: (name: ceph,  color: #8B5CF6),
+  d: (name: dmz,   color: #F87171),
+);
+
+@function zone-color($key) {
+  @return map.get(map.get($zones, $key), color);
+}
+
+@function zone-name($key) {
+  @return map.get(map.get($zones, $key), name);
+}
+
+// ---------- metrics ----------
+$rail-w: 72px;
+$shell-max: 1000px;
+$shell-pad: 40px;
+$shell-pad-narrow: 22px;
+
+// ---------- type ----------
+$display: '"Bricolage Grotesque", Georgia, serif';
+$sans:    '"IBM Plex Sans", system-ui, sans-serif';
+$mono:    '"IBM Plex Mono", ui-monospace, monospace';
+
+// ---------- breakpoints ----------
+$bp-narrow: 860px;
+
+@mixin narrow {
+  @media (max-width: $bp-narrow) { @content; }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) { @content; }
+}

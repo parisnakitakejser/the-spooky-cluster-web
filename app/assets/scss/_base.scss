@@ -1,0 +1,79 @@
+@use "sass:map";
+@use "tokens" as *;
+
+// ---------- custom properties ----------
+// Emitted from the Sass tokens so there is still exactly one place to
+// change a colour, while pages can keep reaching for var(--prod) inline.
+:root {
+  --void:  #{$void};
+  --cab:   #{$cab};
+  --rail:  #{$rail};
+  --line:  #{$line};
+  --ink:   #{$ink};
+  --dim:   #{$dim};
+  --faint: #{$faint};
+
+  --pink: #{$pink};
+
+  @each $key, $zone in $zones {
+    --#{map.get($zone, name)}: #{map.get($zone, color)};
+  }
+
+  --rail-w: #{$rail-w};
+  --display: #{$display};
+  --sans: #{$sans};
+  --mono: #{$mono};
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--ink);
+  font: 400 16px/1.7 #{$sans};
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: zone-color(p);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(34, 211, 238, .35);
+
+  &:hover { border-bottom-color: zone-color(p); }
+}
+
+:focus-visible {
+  outline: 2px solid $pink;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--cab);
+  color: var(--ink);
+  padding: 12px 20px;
+  z-index: 99;
+
+  &:focus { left: 8px; top: 8px; }
+}
+
+// ---------- shell ----------
+.shell { margin-left: var(--rail-w); }
+
+.wrap {
+  max-width: $shell-max;
+  padding: 0 $shell-pad;
+  margin: 0 auto;
+
+  @include narrow { padding: 0 $shell-pad-narrow; }
+}
+
+@include narrow {
+  :root { --rail-w: 0px; }
+}
