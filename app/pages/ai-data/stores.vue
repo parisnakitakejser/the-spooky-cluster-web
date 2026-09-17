@@ -37,7 +37,6 @@ const pipeline = [
     </template>
   </PageHead>
 
-  <SectionNav :hub="{ to: '/ai-data', label: 'Overview' }" :links="aiDataPages" />
 
   <section class="unit" data-zone="ceph">
     <p class="u-slot">state</p>

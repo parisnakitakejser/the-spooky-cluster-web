@@ -51,6 +51,31 @@ export const aiDataPages: SiteLink[] = [
   { to: '/ai-data/stores', label: 'Data stores' },
 ]
 
+export interface SiteSection {
+  hub: SiteLink
+  /** Pages under the hub, in reading order. */
+  links: SiteLink[]
+}
+
+/**
+ * Sections are registered here rather than wired up per page, so the
+ * breadcrumb, the section bar and the parent highlight in the top nav all
+ * agree without anybody remembering to pass a prop.
+ */
+export const sections: SiteSection[] = [
+  { hub: { to: '/ai-data', label: 'AI & Data' }, links: aiDataPages },
+]
+
+/** The section a path belongs to, hub included. */
+export function sectionFor(path: string): SiteSection | undefined {
+  return sections.find(s => path === s.hub.to || path.startsWith(`${s.hub.to}/`))
+}
+
+/** True when a nav link is the current page, or an ancestor of it. */
+export function isWithin(path: string, to: string): boolean {
+  return path === to || path.startsWith(`${to}/`)
+}
+
 export const siteName = 'the spooky cluster'
 
 /** Canonical origin. No trailing slash — everything below appends a path. */

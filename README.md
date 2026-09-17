@@ -203,7 +203,7 @@ app/
     SecurityChain                              the zone diagram
     RadarChart RadarLegend                     the radar and its numbered list
     FlowChain SecurityChain                    the chain diagrams
-    SectionNav                                 sibling links within a section
+    SectionBar                                 second-level nav, from the registry
     PhotoGrid                                  photo figures, blank until filled
     SiteError                                  the 404 / 500 body
   utils/site.ts        nav links and reading order
@@ -270,6 +270,19 @@ invented. Page content lives as plain arrays in each page's `<script setup>`
 object, not copying markup. The node names are themed (crypt, ossuary, séance,
 obelisk, lifeline) — replace them with your real ones or commit to them, but
 don't do half and half.
+
+### Sections
+
+A page joins a section by being listed in `sections` in `app/utils/site.ts` —
+nothing is wired up per page. From that one registry:
+
+- `SectionBar` renders the second-level nav under the header, on every page
+  in the section, with the current one underlined;
+- `PageHead` puts the hub in the breadcrumb, so a child reads
+  `home / ai & data / mcp`;
+- `SiteHeader` marks the parent `aria-current="location"` with a dotted
+  underline, so the top nav shows which section you are inside as well as
+  which page you are on.
 
 ### Chain diagrams
 

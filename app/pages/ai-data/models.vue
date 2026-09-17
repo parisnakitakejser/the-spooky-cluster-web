@@ -29,7 +29,6 @@ const models = {
     </template>
   </PageHead>
 
-  <SectionNav :hub="{ to: '/ai-data', label: 'Overview' }" :links="aiDataPages" />
 
   <section class="unit" data-zone="prod">
     <p class="u-slot">inference</p>

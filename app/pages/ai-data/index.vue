@@ -34,7 +34,6 @@ const sections = [
     </template>
   </PageHead>
 
-  <SectionNav :hub="{ to: '/ai-data', label: 'Overview' }" :links="aiDataPages" />
 
   <section class="unit" data-zone="mgmt">
     <p class="u-slot">at a glance</p>

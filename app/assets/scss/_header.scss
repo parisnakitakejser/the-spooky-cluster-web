@@ -38,9 +38,17 @@
 
   &:hover { color: var(--ink); }
 
+  // Exact page, and — one level up — the section it sits in. A dimmer rule
+  // for the parent says "you are in here" without claiming to be the page.
   &[aria-current="page"] {
     color: var(--ink);
     border-bottom: 2px solid $pink;
+    padding-bottom: 2px;
+  }
+
+  &[aria-current="location"] {
+    color: var(--ink);
+    border-bottom: 2px dotted rgba(255, 79, 163, .6);
     padding-bottom: 2px;
   }
 }
@@ -102,4 +110,83 @@
     display: block;
     margin-bottom: 3px;
   }
+}
+
+
+// ---------- section bar ----------
+// Second-level navigation. Sits between the top bar and the page so the
+// hierarchy is visible rather than implied.
+.secbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0 0 4px;
+  padding: 14px 0 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+
+  // A short pink rule tying it to the section it belongs to.
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 40px;
+    height: 1px;
+    background: $pink;
+  }
+}
+
+.secbar-name {
+  font: 500 13px/1 $mono;
+  letter-spacing: .08em;
+  text-transform: lowercase;
+  color: var(--faint);
+  border: 0;
+  white-space: nowrap;
+  flex: none;
+  padding-bottom: 12px;
+
+  &::after {
+    content: " /";
+    color: var(--line);
+  }
+
+  &:hover { color: var(--dim); }
+}
+
+.secbar-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.secbar-link {
+  font: 400 14px $sans;
+  color: var(--dim);
+  border: 0;
+  white-space: nowrap;
+  padding-bottom: 12px;
+  border-bottom: 2px solid transparent;
+
+  &:hover { color: var(--ink); }
+
+  &.on {
+    color: var(--ink);
+    border-bottom-color: $pink;
+  }
+}
+
+@include narrow {
+  .secbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .secbar-name { padding-bottom: 0; }
 }
