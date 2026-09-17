@@ -23,7 +23,7 @@ const cards = [
   { to: '/ai-data', zone: 'mgmt', title: 'AI & Data', body: 'Local models, the databases under them, and the rule that nothing leaves the house to be processed.', meta: 'models · postgres · mqtt' },
   { to: '/observability', zone: 'pink', title: 'Observability', body: 'Metrics, logs, and the eight rules that are allowed to wake me at three in the morning.', meta: 'metrics · logs · alerts' },
   { to: '/radar', zone: 'prod', title: 'Tech radar', body: 'Every tool in the rack, ringed by how much I trust it — and a page of detail on each one.', meta: 'adopt · trial · research · hold' },
-  { to: '/about', zone: 'stage', title: 'About', body: 'Who runs this, how it started, what it hosts, and photographs of the actual room.', meta: 'the person · the room · the rules' },
+  { to: '/about', zone: 'stage', title: 'About', body: 'Why a practice rack exists, what the family ended up depending on, and photographs of the actual room.', meta: 'the person · the practice · the rules' },
   { to: '/log', zone: 'mgmt', title: 'Build log', body: 'What changed, what broke, and what I\'d do differently. Newest first.', meta: 'changes · incidents' },
 ]
 </script>

@@ -501,3 +501,44 @@ a.chip {
 
   @include narrow { max-width: 128px; }
 }
+
+
+// ---------- status pill ----------
+.pill {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid currentColor;
+  font: 500 10px $mono;
+  letter-spacing: .06em;
+  text-transform: lowercase;
+  vertical-align: middle;
+  color: var(--faint);
+
+  &[data-status="daily"] { color: zone-color(s); }
+  &[data-status="testing"] { color: zone-color(m); }
+  &[data-status="mine"] { color: var(--faint); }
+}
+
+// ---------- an unfilled piece of prose ----------
+// Same idea as a blank photo slot: visibly waiting rather than broken.
+.edit-slot {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: var(--rail);
+  font-size: 14px;
+  color: var(--faint);
+
+  strong { color: var(--dim); font-weight: 500; }
+
+  code {
+    font: 400 12px $mono;
+    color: var(--dim);
+    background: var(--cab);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+}
