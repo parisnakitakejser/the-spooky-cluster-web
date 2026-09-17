@@ -436,3 +436,68 @@ a.chip {
     overflow-wrap: anywhere;
   }
 }
+
+// ---------- portrait ----------
+.intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 34px;
+  align-items: start;
+
+  @include narrow {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    justify-items: start;
+  }
+}
+
+.portrait {
+  margin: 0;
+  text-align: center;
+  flex: none;
+}
+
+.portrait-ring {
+  width: 184px;
+  height: 184px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--rail);
+  border: 2px solid $pink;
+  box-shadow: 0 0 26px rgba(255, 79, 163, .22);
+  display: grid;
+  place-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @include narrow { width: 128px; height: 128px; }
+}
+
+// Placeholder ring: dashed, and the ghost stands in until there is a face.
+.portrait-ring.empty {
+  border-style: dashed;
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.portrait-ghost {
+  width: 62%;
+  height: 62%;
+  color: $pink;
+  opacity: .5;
+}
+
+.portrait figcaption {
+  margin-top: 12px;
+  font: 400 11px $mono;
+  color: var(--faint);
+  overflow-wrap: anywhere;
+  max-width: 184px;
+
+  @include narrow { max-width: 128px; }
+}

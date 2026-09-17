@@ -268,6 +268,11 @@ Drop JPEGs into `public/photos/` and set `file` on the matching entry in
 rather than a broken image, so the page is presentable before the photos are.
 Give each one a `width` and `height` so the page does not jump while it loads.
 
+The portrait in the about intro works the same way — it is the `<Portrait>`
+component at the top of that page. Until you set `file="portrait.jpg"` the
+ring is dashed and the ghost stands in for you. Crop it square; it is
+`object-fit: cover` inside a circle, so anything else loses its edges.
+
 ### The domain
 
 `siteUrl` in `app/utils/site.ts` is the single place the hostname appears in

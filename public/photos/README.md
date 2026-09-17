@@ -10,6 +10,7 @@ page jumping while the image loads.
 
 Suggested, matching the slots already on the page:
 
+    portrait.jpg          you, for the circle in the about intro (crop square)
     rack-front.jpg        the cabinet, doors open
     rack-rear-cabling.jpg the three vertical runs
     ossuary-chassis.jpg   a Supermicro chassis with the lid off

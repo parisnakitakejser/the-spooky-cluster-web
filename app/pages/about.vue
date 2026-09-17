@@ -53,12 +53,15 @@ const rules = [
   <section class="unit" data-zone="stage">
     <p class="u-slot">who</p>
     <h2>Hello</h2>
-    <div class="prose">
-      <!-- Replace this section with your own. Everything else on the page
-           works without it; this is the part only you can write. -->
-      <p>I am Paris, and this rack is mine. It lives in a garage outside Aarhus, it draws about 612 W doing nothing, and it has taught me more than any course I have paid for.</p>
-      <p>I am not a data centre. There is no rotation, no second pair of eyes on a firewall change, and no SLA. What there is instead is a set of rules I actually follow, written down below, and a habit of recording the mistakes as carefully as the successes.</p>
-      <p>The pages on this site are the documentation I wanted to find when I was starting: specific hardware, real numbers, and the parts that went wrong. If something here saves you an evening, that is the whole point.</p>
+    <div class="intro">
+      <Portrait file="" alt="Portrait" />
+      <div class="prose">
+        <!-- Replace this section with your own. Everything else on the page
+             works without it; this is the part only you can write. -->
+        <p>I am Paris, and this rack is mine. It lives in a garage outside Aarhus, it draws about 612 W doing nothing, and it has taught me more than any course I have paid for.</p>
+        <p>I am not a data centre. There is no rotation, no second pair of eyes on a firewall change, and no SLA. What there is instead is a set of rules I actually follow, written down below, and a habit of recording the mistakes as carefully as the successes.</p>
+        <p>The pages on this site are the documentation I wanted to find when I was starting: specific hardware, real numbers, and the parts that went wrong. If something here saves you an evening, that is the whole point.</p>
+      </div>
     </div>
   </section>
 
