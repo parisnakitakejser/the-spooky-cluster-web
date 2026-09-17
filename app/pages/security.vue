@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'Security — the spooky cluster',
   description: 'The cleaning zone: DMZ, quarantine, secure and SIEM, the rules between them, and what gets logged.',
 })

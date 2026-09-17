@@ -14,6 +14,7 @@ export const navLinks: SiteLink[] = [
   { to: '/observability', label: 'Observability' },
   { to: '/radar', label: 'Radar' },
   { to: '/log', label: 'Log' },
+  { to: '/about', label: 'About' },
 ]
 
 /**
@@ -31,7 +32,11 @@ export const readingOrder: SiteLink[] = [
   { to: '/observability', label: 'Observability' },
   { to: '/radar', label: 'Tech radar' },
   { to: '/log', label: 'Build log' },
+  { to: '/about', label: 'About' },
 ]
 
 export const siteName = 'the spooky cluster'
+
+/** Canonical origin. No trailing slash — everything below appends a path. */
+export const siteUrl = 'https://spooky.rest'
 export const footerLine = 'the spooky cluster · rack 01 · Aarhus'

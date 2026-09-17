@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'Observability — the spooky cluster',
   description: 'Metrics, logs and the handful of alerts that have actually fired: what gets watched in the rack, what wakes me, and what still goes unnoticed.',
 })

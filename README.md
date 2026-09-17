@@ -3,6 +3,8 @@
 A site documenting a 42U homelab near Aarhus: the rack, three Kubernetes
 clusters, a Ceph pool, and the security zones everything has to pass through.
 
+Live at **[spooky.rest](https://spooky.rest)**.
+
 Nuxt 4 with Sass. Every page is pre-rendered at build time and served by
 Nitro's own node server, so there is no web server config anywhere — routing,
 404s, headers and caching are all decided in `nuxt.config.ts`.
@@ -83,7 +85,7 @@ kubectl -n spooky-site get httproute spooky-cluster-site \
 | `image.tag` | `""` → `appVersion` | pin the deployed build |
 | `image.digest` | `""` | stronger than a tag; wins over it |
 | `httpRoute.parentRefs` | `public` in `gateway` | the Gateway to attach to |
-| `httpRoute.hostnames` | `spooky.example.dk` | change this |
+| `httpRoute.hostnames` | `spooky.rest` | the public hostname |
 | `networkPolicy.allowFrom` | `[{namespace: gateway}]` | must match the gateway's namespace |
 | `networkPolicy.denyEgress` | `true` | the pod calls nothing, DNS included |
 | `replicaCount` | `2` | ignored when `autoscaling.enabled` |
@@ -181,6 +183,7 @@ app/
     storage.vue        Ceph OSDs, pools, CRUSH, backups
     security.vue       zone chain diagram, firewall policy, detection
     network.vue        VLANs, hardware, DNS, remote access
+    about.vue          who runs it, photographs, what it hosts, the rules
     ai-data.vue        local models, the databases under them, the data path
     observability.vue  metrics, logs, and the rules allowed to wake me
     radar/index.vue    the tech radar chart and the text version of it
@@ -192,11 +195,16 @@ app/
     GhostEmblem GhostMini Ghost<Page>          the SVG ghosts
     SecurityChain                              the zone diagram
     RadarChart RadarLegend                     the radar and its numbered list
+    PhotoGrid                                  photo figures, blank until filled
     SiteError                                  the 404 / 500 body
   utils/site.ts        nav links and reading order
   utils/radar.ts       radar entries, geometry and blip placement
+  composables/         usePageSeo — title, description and Open Graph in one call
   assets/scss/         every style on the site
 public/favicon.svg     the ghost
+public/photos/         about-page photographs (see its README)
+public/robots.txt
+server/routes/         healthz, and sitemap.xml built from the nav lists
 Dockerfile             node build, node runtime, unprivileged, port 8080
 charts/spooky-cluster-site/
   Chart.yaml
@@ -252,6 +260,23 @@ invented. Page content lives as plain arrays in each page's `<script setup>`
 object, not copying markup. The node names are themed (crypt, ossuary, séance,
 obelisk, lifeline) — replace them with your real ones or commit to them, but
 don't do half and half.
+
+### Photographs
+
+Drop JPEGs into `public/photos/` and set `file` on the matching entry in
+`app/pages/about.vue`. A slot with an empty `file` renders as a blank panel
+rather than a broken image, so the page is presentable before the photos are.
+Give each one a `width` and `height` so the page does not jump while it loads.
+
+### The domain
+
+`siteUrl` in `app/utils/site.ts` is the single place the hostname appears in
+the app. It feeds the canonical link, the Open Graph URL and `sitemap.xml`;
+the chart's `httpRoute.hostnames` sets what the gateway routes.
+
+There is no Open Graph image yet — a shared link shows the title and
+description but no picture. Add one as `public/og.png` at 1200×630 and set
+`ogImage` in `usePageSeo` when you have artwork.
 
 ### The tech radar
 

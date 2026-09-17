@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'Network — the spooky cluster',
   description: 'VLAN plan, routing, DNS and remote access for a 42U homelab near Aarhus.',
 })
@@ -61,7 +61,7 @@ const devices = {
     <h2>DNS, and one split-horizon regret</h2>
     <div class="prose">
       <p>Internal names resolve through a pair of AdGuard Home instances on the management cluster, forwarding to Unbound with DNSSEC. The public zone is on Cloudflare, and cert-manager uses DNS-01 against it, so no service ever needs to answer a challenge on port 80.</p>
-      <p>Split-horizon means <code>photos.spooky.example</code> resolves to a private address inside the house and a public one outside. It works, and it is the single most confusing thing in the lab whenever something breaks — half of all my debugging false starts have been a stale DNS answer rather than the thing I was actually chasing. I'd probably use distinct internal names if I started again.</p>
+      <p>Split-horizon means <code>photos.spooky.rest</code> resolves to a private address inside the house and a public one outside. It works, and it is the single most confusing thing in the lab whenever something breaks — half of all my debugging false starts have been a stale DNS answer rather than the thing I was actually chasing. I'd probably use distinct internal names if I started again.</p>
     </div>
   </section>
 

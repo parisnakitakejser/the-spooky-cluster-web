@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'AI & Data — the spooky cluster',
   description: 'Local models, the databases underneath them, and the rule that nothing in the house has to phone anyone to answer a question.',
 })

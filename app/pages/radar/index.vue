@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'Tech radar — the spooky cluster',
   description: 'Every tool in the rack, placed on a radar: what I have adopted, what is on trial, what I am researching, and what I am no longer starting anything new with.',
 })

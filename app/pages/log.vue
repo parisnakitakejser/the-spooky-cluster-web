@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'Build log — the spooky cluster',
   description: 'What changed, what broke, and what I\'d do differently. Newest first.',
 })

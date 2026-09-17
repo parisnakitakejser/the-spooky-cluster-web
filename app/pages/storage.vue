@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'Storage — the spooky cluster',
   description: 'A three-node Ceph cluster across 36 disks: OSD layout, pools, CRUSH rules and the backup that isn\'t Ceph.',
 })

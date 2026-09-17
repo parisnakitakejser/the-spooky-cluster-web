@@ -152,9 +152,8 @@ httpRoute:
     - name: public
       namespace: gateway
       sectionName: https
-  # CHANGE ME
   hostnames:
-    - spooky.example.dk
+    - spooky.rest
   # backendRefs default to this chart's Service on service.port when a rule
   # does not set them.
   rules:

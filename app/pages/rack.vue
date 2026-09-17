@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'The rack — the spooky cluster',
   description: 'Full 42U front and rear elevation of the Spooky Cluster rack, with cabling and airflow notes.',
 })

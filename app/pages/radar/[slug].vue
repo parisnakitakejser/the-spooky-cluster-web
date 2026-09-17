@@ -26,7 +26,7 @@ const movementLabel: Record<Movement, string> = {
   out: 'moved outward',
 }
 
-useSeoMeta({
+usePageSeo({
   title: () => `${entry.value?.name} — tech radar — the spooky cluster`,
   description: () => entry.value?.tagline,
 })

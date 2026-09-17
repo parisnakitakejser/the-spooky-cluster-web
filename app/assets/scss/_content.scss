@@ -313,6 +313,9 @@ a.chip {
     transform: translateY(-2px);
   }
 
+  // A card that is not a link should not lift or invite a click.
+  &.static:hover { transform: none; }
+
   h3 {
     font: 500 17px #{$sans};
     margin: 0 0 6px;
@@ -372,5 +375,64 @@ a.chip {
     display: block;
 
     &.dash { border-top-style: dashed; }
+  }
+}
+
+// ---------- photographs ----------
+.shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.shot {
+  margin: 0;
+
+  &.wide { grid-column: 1 / -1; }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--rail);
+  }
+
+  figcaption {
+    margin-top: 10px;
+    font: 400 13px $sans;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+}
+
+// An empty slot should look deliberate, the way a blanking panel does.
+.shot-empty {
+  aspect-ratio: 4 / 3;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--cab) 0 10px,
+    var(--rail) 10px 20px
+  );
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 16px;
+
+  span {
+    font: 500 11px $mono;
+    letter-spacing: .08em;
+    color: var(--faint);
+  }
+
+  code {
+    font: 400 11px $mono;
+    color: var(--faint);
+    opacity: .75;
+    overflow-wrap: anywhere;
   }
 }
