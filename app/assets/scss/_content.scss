@@ -31,6 +31,14 @@
   }
 }
 
+// The ghost's own pink, for the sixth sector. Not a zone, so it is not in
+// the $zones map and gets its rule here.
+.chip.k {
+  color: $pink;
+
+  i { box-shadow: 0 0 8px $pink; }
+}
+
 a.chip {
   border-bottom: 1px solid var(--line);
 
@@ -61,6 +69,8 @@ a.chip {
   @each $key, $zone in $zones {
     &[data-zone="#{map.get($zone, name)}"] { --tag: var(--#{map.get($zone, name)}); }
   }
+
+  &[data-zone="pink"] { --tag: #{$pink}; }
 
   h2 {
     font: 400 clamp(24px, 3vw, 32px)/1.15 #{$display};

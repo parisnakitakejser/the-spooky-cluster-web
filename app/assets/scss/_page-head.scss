@@ -4,7 +4,7 @@
 .hero {
   padding: 72px 0 88px;
   display: grid;
-  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
   gap: 56px;
   align-items: center;
 
@@ -41,7 +41,7 @@
   border-bottom: 1px solid var(--line);
   margin-bottom: 40px;
   position: relative;
-  padding-right: 118px;
+  padding-right: 188px;
 
   h1 {
     font: 400 clamp(32px, 5vw, 50px)/1.05 #{$display};
@@ -64,7 +64,7 @@
     margin-top: 22px;
   }
 
-  @include narrow { padding: 36px 76px 28px 0; }
+  @include narrow { padding: 36px 104px 28px 0; }
 }
 
 .crumb {

@@ -147,9 +147,9 @@ $emblem-idle: 4600ms;
 .pgh {
   position: absolute;
   right: 0;
-  top: 46px;
-  width: 92px;
-  height: 92px;
+  top: 40px;
+  width: 156px;
+  height: 156px;
   transform-box: fill-box;
   transform-origin: center;
   animation: minibob 4.2s ease-in-out infinite;
@@ -182,7 +182,7 @@ $emblem-idle: 4600ms;
 
   .cur { animation: ledflick 1.1s steps(1) infinite; }
 
-  @include narrow { width: 62px; height: 62px; top: 30px; }
+  @include narrow { width: 88px; height: 88px; top: 26px; }
 }
 
 @include reduced-motion {

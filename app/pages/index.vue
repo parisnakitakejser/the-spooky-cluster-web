@@ -20,7 +20,9 @@ const cards = [
   { to: '/storage', zone: 'ceph', title: 'Storage', body: 'Ceph across 36 disks, the CRUSH layout, and the backup that isn\'t Ceph.', meta: 'osds · pools · backups' },
   { to: '/security', zone: 'dmz', title: 'Security', body: 'The cleaning zone: DMZ, quarantine, secure, SIEM, and the rules between them.', meta: 'zones · policy · detection' },
   { to: '/network', zone: 'stage', title: 'Network', body: 'VLANs, routing, DNS, and the decision to run 10G only where it earns its heat.', meta: 'vlans · routing · dns' },
-  { to: '/radar', zone: 'mgmt', title: 'Tech radar', body: 'Every tool in the rack, ringed by how much I trust it — and a page of detail on each one.', meta: 'adopt · trial · assess · hold' },
+  { to: '/ai-data', zone: 'mgmt', title: 'AI & Data', body: 'Local models, the databases under them, and the rule that nothing leaves the house to be processed.', meta: 'models · postgres · mqtt' },
+  { to: '/observability', zone: 'pink', title: 'Observability', body: 'Metrics, logs, and the eight rules that are allowed to wake me at three in the morning.', meta: 'metrics · logs · alerts' },
+  { to: '/radar', zone: 'prod', title: 'Tech radar', body: 'Every tool in the rack, ringed by how much I trust it — and a page of detail on each one.', meta: 'adopt · trial · research · hold' },
   { to: '/log', zone: 'pink', title: 'Build log', body: 'What changed, what broke, and what I\'d do differently. Newest first.', meta: 'changes · incidents' },
 ]
 </script>

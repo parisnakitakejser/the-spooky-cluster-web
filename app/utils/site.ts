@@ -10,6 +10,8 @@ export const navLinks: SiteLink[] = [
   { to: '/storage', label: 'Storage' },
   { to: '/security', label: 'Security' },
   { to: '/network', label: 'Network' },
+  { to: '/ai-data', label: 'AI & Data' },
+  { to: '/observability', label: 'Observability' },
   { to: '/radar', label: 'Radar' },
   { to: '/log', label: 'Log' },
 ]
@@ -25,6 +27,8 @@ export const readingOrder: SiteLink[] = [
   { to: '/storage', label: 'Storage' },
   { to: '/security', label: 'Security' },
   { to: '/network', label: 'Network' },
+  { to: '/ai-data', label: 'AI & Data' },
+  { to: '/observability', label: 'Observability' },
   { to: '/radar', label: 'Tech radar' },
   { to: '/log', label: 'Build log' },
 ]

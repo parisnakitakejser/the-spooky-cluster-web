@@ -12,7 +12,7 @@
 //  chart unless its ring or quadrant changes.
 // ============================================================
 
-export type RingId = 'adopt' | 'trial' | 'assess' | 'hold'
+export type RingId = 'adopt' | 'trial' | 'research' | 'hold'
 
 /** none: unchanged. new: first appearance. in/out: moved toward or away from adopt. */
 export type Movement = 'none' | 'new' | 'in' | 'out'
@@ -67,9 +67,9 @@ export const radarRings: RadarRing[] = [
     blurb: 'Running for real, but not yet load-bearing. Staging has it; production is waiting.',
   },
   {
-    id: 'assess',
-    name: 'Assess',
-    blurb: 'Read the docs, maybe built a toy. No opinion I would defend yet.',
+    id: 'research',
+    name: 'Research',
+    blurb: 'Reading, testing, poking at it on a bench. No opinion I would defend yet.',
   },
   {
     id: 'hold',
@@ -92,15 +92,27 @@ export const radarQuadrants: RadarQuadrant[] = [
     zone: 'ceph',
   },
   {
+    id: 'ai-data',
+    name: 'AI & Data',
+    blurb: 'Databases, brokers, and the models that run on my own hardware or not at all.',
+    zone: 'mgmt',
+  },
+  {
     id: 'network',
     name: 'Network & Security',
     blurb: 'Routing, names, secrets, and everything in the cleaning zone.',
     zone: 'dmz',
   },
   {
-    id: 'operations',
-    name: 'Operations & Workloads',
-    blurb: 'How changes ship, how I find out it broke, and what it all runs for.',
+    id: 'observability',
+    name: 'Observability',
+    blurb: 'How I find out something broke, ideally before the house tells me.',
+    zone: 'pink',
+  },
+  {
+    id: 'delivery',
+    name: 'Delivery & Workloads',
+    blurb: 'How changes ship, and what the whole rack is ultimately running for.',
     zone: 'stage',
   },
 ]
@@ -212,12 +224,12 @@ export const radarEntries: RadarEntry[] = [
     slug: 'cilium',
     name: 'Cilium',
     quadrant: 'platform',
-    ring: 'assess',
+    ring: 'research',
     movement: 'new',
     since: '2026-08',
     tagline: 'eBPF networking, and a NetworkPolicy I could actually debug.',
     what: 'A CNI plugin that implements pod networking, load balancing and network policy with eBPF programs in the kernel rather than iptables rules. Hubble, its observability layer, shows flows and policy verdicts live.',
-    why: 'Assessing it because "the NetworkPolicy is correct" is currently something I believe rather than something I can watch. Hubble turning a denied flow into a visible event is the entire attraction.',
+    why: 'On the bench because "the NetworkPolicy is correct" is currently something I believe rather than something I can watch. Hubble turning a denied flow into a visible event is the entire attraction.',
     watch: [
       'It wants a recent kernel. Check what Talos ships before planning the migration.',
       'Swapping CNI on a running cluster is a rebuild in practice. Staging first, and expect to do it twice.',
@@ -233,12 +245,12 @@ export const radarEntries: RadarEntry[] = [
     slug: 'kubevirt',
     name: 'KubeVirt',
     quadrant: 'platform',
-    ring: 'assess',
+    ring: 'research',
     movement: 'none',
     since: '2026-06',
     tagline: 'For the two things that refuse to be a container.',
     what: 'Runs virtual machines as Kubernetes resources, so a VM is scheduled, networked and backed by storage the same way a pod is.',
-    why: 'There are always one or two appliances that ship as a disk image and nothing else. Assessing whether one control plane for both is better than keeping a hypervisor around for them.',
+    why: 'There are always one or two appliances that ship as a disk image and nothing else. Researching whether one control plane for both is better than keeping a hypervisor around for them.',
     watch: [
       'Live migration needs shared storage — that means the Ceph RBD path, and it means testing it.',
       'Adding VMs to a cluster adds a blast radius that Kubernetes upgrades now touch.',
@@ -333,12 +345,12 @@ export const radarEntries: RadarEntry[] = [
     slug: 'rook',
     name: 'Rook',
     quadrant: 'storage',
-    ring: 'assess',
+    ring: 'research',
     movement: 'none',
     since: '2026-02',
     tagline: 'Ceph as a Kubernetes operator, if I ever want that.',
     what: 'An operator that deploys and manages Ceph inside Kubernetes: OSDs become pods, and cluster changes become custom resource edits.',
-    why: 'The Ceph cluster here runs on its own hardware, outside Kubernetes, on purpose — storage that depends on the thing it stores for is a circular dependency at exactly the wrong moment. Assessing Rook for a future second pool, not for this one.',
+    why: 'The Ceph cluster here runs on its own hardware, outside Kubernetes, on purpose — storage that depends on the thing it stores for is a circular dependency at exactly the wrong moment. Researching Rook for a future second pool, not for this one.',
     watch: [
       'Storage inside the cluster that the cluster needs to boot is a bootstrap problem. Think it through before migrating.',
       'The operator abstracts Ceph right up until something breaks, and then you need to know Ceph anyway.',
@@ -352,12 +364,12 @@ export const radarEntries: RadarEntry[] = [
     slug: 'velero',
     name: 'Velero',
     quadrant: 'storage',
-    ring: 'assess',
+    ring: 'research',
     movement: 'new',
     since: '2026-07',
     tagline: 'Backing up the cluster, not just the volumes.',
     what: 'Backs up Kubernetes API objects and persistent volumes to object storage, and restores them into the same or a different cluster.',
-    why: 'Restic covers the data. Argo CD covers the manifests. What neither covers cleanly is the in-between — resources something created at runtime. Assessing whether that gap is real or imagined.',
+    why: 'Restic covers the data. Argo CD covers the manifests. What neither covers cleanly is the in-between — resources something created at runtime. Researching whether that gap is real or imagined.',
     watch: [
       'If everything truly comes from Git, this is duplicated effort. Prove the gap before adding the tool.',
       'CSI snapshot support depends on the storage driver — check what the Ceph CSI driver actually implements.',
@@ -385,6 +397,260 @@ export const radarEntries: RadarEntry[] = [
       { label: 'min.io', href: 'https://min.io/docs/minio/linux/index.html' },
     ],
     related: ['ceph'],
+  },
+
+  // ---------- ai & data ----------
+  {
+    slug: 'postgresql',
+    name: 'PostgreSQL',
+    quadrant: 'ai-data',
+    ring: 'adopt',
+    movement: 'none',
+    since: '2024-06',
+    tagline: 'The database under almost everything that matters.',
+    what: 'A relational database with a long reputation for correctness: real transactions, real constraints, and an extension system that has grown it into full-text search, time series and vector similarity without forking the project.',
+    why: 'Immich, Paperless, Forgejo and half the small services I wrote sit on it. One database engine to back up, tune and upgrade rather than four, and its volumes come from Ceph over RBD like everything else stateful.',
+    watch: [
+      'Major-version upgrades are a dump and restore, not a restart. Schedule them; do not discover them.',
+      'Default settings assume a much smaller machine than you have. `shared_buffers` and `work_mem` are worth an evening.',
+      'A database backup is a dump, not a filesystem snapshot of a running server. Test the restore path specifically.',
+    ],
+    links: [
+      { label: 'postgresql.org docs', href: 'https://www.postgresql.org/docs/current/' },
+    ],
+    related: ['pgvector', 'ceph', 'immich'],
+  },
+  {
+    slug: 'valkey',
+    name: 'Valkey',
+    quadrant: 'ai-data',
+    ring: 'adopt',
+    movement: 'in',
+    since: '2026-04',
+    tagline: 'Redis, minus the licence question.',
+    what: 'A fork of Redis created after its 2024 relicensing, maintained under the Linux Foundation and still BSD. Same protocol, same data structures, drop-in for existing clients.',
+    why: 'Caching and job queues for the self-hosted apps. The migration was a container image change and a restart, which is the whole argument for a protocol-compatible fork.',
+    watch: [
+      'Persistence is opt-in and easy to misconfigure. Decide whether each instance is a cache or a datastore, and configure it as that one thing.',
+      'Nothing here treats it as durable. If something ever does, it needs a backup story of its own.',
+    ],
+    links: [
+      { label: 'valkey.io', href: 'https://valkey.io/topics/' },
+    ],
+    related: ['redis', 'postgresql'],
+  },
+  {
+    slug: 'mosquitto',
+    name: 'Eclipse Mosquitto',
+    quadrant: 'ai-data',
+    ring: 'adopt',
+    movement: 'none',
+    since: '2024-06',
+    tagline: 'The message bus the house actually runs on.',
+    what: 'A small MQTT broker. Publishers send messages to topics, subscribers receive them, and the broker holds retained values so a client that just connected knows the current state.',
+    why: 'Sensors, Frigate and Home Assistant all meet here. Keeping the bus separate from the automation platform means I can restart Home Assistant without the sensors losing their way.',
+    watch: [
+      'Anonymous access is the default in too many tutorials. Per-client credentials and topic ACLs, or the bus is a broadcast channel for the whole VLAN.',
+      'Retained messages outlive the device that sent them. A stale retained value looks exactly like a working sensor.',
+    ],
+    links: [
+      { label: 'mosquitto.org', href: 'https://mosquitto.org/documentation/' },
+    ],
+    related: ['home-assistant', 'frigate'],
+  },
+  {
+    slug: 'ollama',
+    name: 'Ollama',
+    quadrant: 'ai-data',
+    ring: 'trial',
+    movement: 'new',
+    since: '2026-06',
+    tagline: 'Local models, and nothing leaving the rack to answer a question.',
+    what: 'A runtime that pulls quantised open-weight models and serves them over an HTTP API, handling model files, memory and context for you. It is llama.cpp underneath with the operational parts smoothed off.',
+    why: 'The reason this quadrant exists. Trial rather than Adopt because it runs on CPU today and a prompt takes long enough that I notice — the GPU that would fix it is still a reserved U in the rack.',
+    watch: [
+      'CPU inference is usable for small models and a test of patience for anything else. Know which you are doing.',
+      'Model weights are gigabytes each and they accumulate. They live on Ceph and they are not backed up — they are re-downloadable.',
+      'The API binds wide by default. It belongs on an internal VLAN, not on anything the DMZ can reach.',
+    ],
+    links: [
+      { label: 'ollama.com docs', href: 'https://github.com/ollama/ollama/tree/main/docs' },
+    ],
+    related: ['open-webui', 'llama-cpp', 'pgvector'],
+  },
+  {
+    slug: 'open-webui',
+    name: 'Open WebUI',
+    quadrant: 'ai-data',
+    ring: 'trial',
+    movement: 'new',
+    since: '2026-06',
+    tagline: 'A chat window for models that never leave the house.',
+    what: 'A self-hosted web interface for LLMs, speaking to Ollama or any OpenAI-compatible endpoint. Multi-user, with conversation history, document attachment and retrieval over uploaded files.',
+    why: 'The part that makes local models usable by someone who is not me. Runs on the production cluster behind the same proxy as everything else, so it is reachable on the LAN and nowhere else.',
+    watch: [
+      'Conversation history is real data about the people using it. It lives in Postgres and it is in the backup set on purpose.',
+      'Its retrieval features quietly become a second data store. Decide where uploaded documents live before people upload any.',
+      'First-run registration is open until you close it. Close it.',
+    ],
+    links: [
+      { label: 'docs.openwebui.com', href: 'https://docs.openwebui.com/' },
+    ],
+    related: ['ollama', 'postgresql'],
+  },
+  {
+    slug: 'frigate',
+    name: 'Frigate',
+    quadrant: 'ai-data',
+    ring: 'trial',
+    movement: 'new',
+    since: '2026-07',
+    tagline: 'Object detection on camera feeds, on hardware I own.',
+    what: 'An NVR that runs real-time object detection on camera streams, publishes events over MQTT and records only the clips that matter. Designed around a Coral TPU or a GPU doing the inference.',
+    why: 'Cameras that decide locally what is worth keeping, rather than uploading everything to someone else\'s disk. Events land on the MQTT bus, so Home Assistant reacts to them like any other sensor.',
+    watch: [
+      'Without an accelerator it will eat CPU and still miss frames. The detector is the whole design.',
+      'Continuous recording is a storage plan, not a checkbox. Work out the retention before pointing it at Ceph.',
+      'Cameras are the most sensitive data in the house. It sits on its own VLAN with no route out.',
+    ],
+    links: [
+      { label: 'docs.frigate.video', href: 'https://docs.frigate.video/' },
+    ],
+    related: ['mosquitto', 'home-assistant', 'ceph'],
+  },
+  {
+    slug: 'pgvector',
+    name: 'pgvector',
+    quadrant: 'ai-data',
+    ring: 'research',
+    movement: 'new',
+    since: '2026-08',
+    tagline: 'Vector search without a second database to operate.',
+    what: 'A PostgreSQL extension adding a vector column type and similarity search, with HNSW and IVFFlat indexes. Embeddings sit in the same table as the row they describe, and join to it normally.',
+    why: 'Researching it against a dedicated vector database for search over my own notes and documents. The attraction is entirely operational: one backup, one restore, one thing to upgrade.',
+    watch: [
+      'Index build is memory-hungry and the parameters materially change recall. Benchmark with your own data, not a blog post\'s.',
+      'Re-embedding everything after changing model is a migration nobody warns you about.',
+      'It will lose to a dedicated engine at scale. At homelab scale, "scale" is not the constraint — operations are.',
+    ],
+    links: [
+      { label: 'pgvector on GitHub', href: 'https://github.com/pgvector/pgvector' },
+    ],
+    related: ['postgresql', 'qdrant', 'ollama'],
+  },
+  {
+    slug: 'qdrant',
+    name: 'Qdrant',
+    quadrant: 'ai-data',
+    ring: 'research',
+    movement: 'new',
+    since: '2026-08',
+    tagline: 'The dedicated answer, if Postgres turns out not to be enough.',
+    what: 'A vector database written in Rust, with payload filtering alongside similarity search, quantisation options and its own clustering.',
+    why: 'The other half of the pgvector bake-off. If filtered search over a few hundred thousand chunks is slow in Postgres, this is where it goes — but it has to earn a second database first.',
+    watch: [
+      'A second data store is a second backup, a second upgrade path and a second thing to be down.',
+      'Filtering combined with approximate search is where engines differ most. Test that specifically, not raw recall.',
+    ],
+    links: [
+      { label: 'qdrant.tech docs', href: 'https://qdrant.tech/documentation/' },
+    ],
+    related: ['pgvector'],
+  },
+  {
+    slug: 'faster-whisper',
+    name: 'faster-whisper',
+    quadrant: 'ai-data',
+    ring: 'research',
+    movement: 'new',
+    since: '2026-08',
+    tagline: 'Speech to text that does not phone anyone.',
+    what: 'A reimplementation of OpenAI\'s Whisper speech recognition models on CTranslate2, several times faster than the reference implementation and considerably lighter on memory, with the same model weights.',
+    why: 'Researching it for voice control in Home Assistant and for transcribing recordings. The point is that a microphone in the house does not become a stream to somebody\'s API.',
+    watch: [
+      'Accuracy drops off for non-English and for accents. Test with the voices that will actually use it.',
+      'Real-time on CPU means a small model and a compromise. This is another entry waiting on the GPU.',
+    ],
+    links: [
+      { label: 'faster-whisper on GitHub', href: 'https://github.com/SYSTRAN/faster-whisper' },
+    ],
+    related: ['home-assistant', 'ollama'],
+  },
+  {
+    slug: 'llama-cpp',
+    name: 'llama.cpp',
+    quadrant: 'ai-data',
+    ring: 'research',
+    movement: 'none',
+    since: '2026-06',
+    tagline: 'What Ollama is standing on, if I ever need the controls.',
+    what: 'A C++ inference engine for transformer models with aggressive quantisation support, running on CPU, on consumer GPUs and on Apple silicon. It defined the GGUF format most local tooling now uses.',
+    why: 'Ollama is the convenient wrapper; this is the thing doing the work. Researched rather than adopted because I have not yet needed a knob Ollama does not expose — but knowing where the knobs are is the difference between tuning and guessing.',
+    watch: [
+      'Quantisation is a quality trade, not free compression. Compare outputs before picking the smallest file that fits.',
+      'It moves fast enough that build flags and model compatibility drift between releases.',
+    ],
+    links: [
+      { label: 'llama.cpp on GitHub', href: 'https://github.com/ggml-org/llama.cpp' },
+    ],
+    related: ['ollama'],
+  },
+  {
+    slug: 'duckdb',
+    name: 'DuckDB',
+    quadrant: 'ai-data',
+    ring: 'research',
+    movement: 'new',
+    since: '2026-09',
+    tagline: 'SQL over files, with no server to run.',
+    what: 'An in-process analytical database — SQLite\'s shape, a column store\'s engine. It queries Parquet, CSV and JSON on disk or over HTTP without loading them anywhere first.',
+    why: 'Researching it for the power and sensor exports: metrics age out of Prometheus, and this is a way to keep the interesting years as Parquet on Ceph and still query them.',
+    watch: [
+      'It is a library, not a service. Concurrent writers are not the model — one writer, many readers.',
+      'Analytical exports are a second copy of data with its own retention question. Decide it deliberately.',
+    ],
+    links: [
+      { label: 'duckdb.org docs', href: 'https://duckdb.org/docs/' },
+    ],
+    related: ['prometheus', 'ceph'],
+  },
+  {
+    slug: 'redis',
+    name: 'Redis',
+    quadrant: 'ai-data',
+    ring: 'hold',
+    movement: 'out',
+    since: '2026-04',
+    tagline: 'Not the software\'s fault. Replaced by the fork.',
+    what: 'The in-memory data store that defined the category: strings, hashes, sorted sets, pub/sub, optional persistence.',
+    why: 'On Hold since the licence moved away from BSD in 2024 and a Linux Foundation fork appeared with the same protocol. Nothing new here points at it; everything that did now points at Valkey.',
+    watch: [
+      'This is a licensing decision, not a technical one. If the terms suit you, the software is still excellent.',
+      'Protocol compatibility is why the migration was cheap. That will not stay true forever as the projects diverge.',
+    ],
+    links: [
+      { label: 'redis.io docs', href: 'https://redis.io/docs/latest/' },
+    ],
+    related: ['valkey'],
+  },
+  {
+    slug: 'influxdb',
+    name: 'InfluxDB',
+    quadrant: 'ai-data',
+    ring: 'hold',
+    movement: 'out',
+    since: '2025-03',
+    tagline: 'Lost the metrics job to Prometheus and never got it back.',
+    what: 'A time-series database with its own query languages and a push-based ingest model, long a homelab default for sensor and power data.',
+    why: 'It held the sensor history before Prometheus took over metrics. Two time-series stores meant two retention policies and two dashboards sources, and the pull model fitted the clusters better. Hold: the old data is exported, nothing new is written.',
+    watch: [
+      'Query language churn across major versions has been the real cost of this one.',
+      'Push ingest hides a dead sender; a pull model makes it an alert. That was the deciding argument here.',
+    ],
+    links: [
+      { label: 'docs.influxdata.com', href: 'https://docs.influxdata.com/' },
+    ],
+    related: ['prometheus', 'duckdb'],
   },
 
   // ---------- network & security ----------
@@ -631,12 +897,12 @@ export const radarEntries: RadarEntry[] = [
     slug: 'tailscale',
     name: 'Tailscale',
     quadrant: 'network',
-    ring: 'assess',
+    ring: 'research',
     movement: 'none',
     since: '2026-03',
     tagline: 'Tempting, and it moves trust somewhere I do not control.',
     what: 'A mesh VPN built on WireGuard with a hosted coordination plane handling key distribution, NAT traversal and ACLs. Headscale is an open-source control server for the same clients.',
-    why: 'Plain WireGuard works and costs nothing but manual key management. Assessing whether the convenience is worth a third party in the identity path — and whether Headscale removes that objection.',
+    why: 'Plain WireGuard works and costs nothing but manual key management. Researching whether the convenience is worth a third party in the identity path — and whether Headscale removes that objection.',
     watch: [
       'The coordination server decides who is in your network. That is the whole trade.',
       'Subnet routers and exit nodes quietly widen what a compromised device reaches.',
@@ -648,11 +914,90 @@ export const radarEntries: RadarEntry[] = [
     related: ['wireguard'],
   },
 
-  // ---------- operations & workloads ----------
+  // ---------- observability ----------
+  {
+    slug: 'alertmanager',
+    name: 'Alertmanager',
+    quadrant: 'observability',
+    ring: 'adopt',
+    movement: 'none',
+    since: '2024-05',
+    tagline: 'The part that decides whether to wake me.',
+    what: 'Takes alerts fired by Prometheus and handles the human side: grouping related ones into a single notification, silencing during known work, inhibiting downstream noise, and routing by severity.',
+    why: 'Everything above medium severity rings my phone; everything else goes to a private Matrix room. Inhibition is what keeps a dead node from producing thirty separate pages for the thirty things that were on it.',
+    watch: [
+      'Grouping and inhibition are the whole value. Without them you get a pager that trains you to ignore it.',
+      'Silences expire. A silence set during maintenance and forgotten is an alert you will not get next time.',
+      'Test the notification path itself. An alerting stack that cannot reach you is worse than none, because you think you are covered.',
+    ],
+    links: [
+      { label: 'Alertmanager docs', href: 'https://prometheus.io/docs/alerting/latest/alertmanager/' },
+    ],
+    related: ['prometheus', 'grafana'],
+  },
+  {
+    slug: 'node-exporter',
+    name: 'node_exporter',
+    quadrant: 'observability',
+    ring: 'adopt',
+    movement: 'none',
+    since: '2024-05',
+    tagline: 'Disk, memory, temperature — the boring metrics that catch real problems.',
+    what: 'Exposes hardware and kernel metrics from a Linux host over HTTP for Prometheus to scrape: filesystems, load, network counters, and hardware sensors where the machine exposes them.',
+    why: 'On every node. The alerts that have actually fired in this rack were disk fill and intake temperature, both from here — not from anything clever.',
+    watch: [
+      'The textfile collector is the escape hatch for anything it does not cover, including SMART data and the fan-curve script.',
+      'Filesystem alerts want rate of change, not just a threshold. "Full in four hours" is more useful than "85%".',
+    ],
+    links: [
+      { label: 'node_exporter on GitHub', href: 'https://github.com/prometheus/node_exporter' },
+    ],
+    related: ['prometheus', 'alertmanager'],
+  },
+  {
+    slug: 'uptime-kuma',
+    name: 'Uptime Kuma',
+    quadrant: 'observability',
+    ring: 'trial',
+    movement: 'new',
+    since: '2026-05',
+    tagline: 'The outside view, for when the inside view is the thing that is down.',
+    what: 'A self-hosted uptime monitor: HTTP, TCP and certificate checks on a schedule, with a status page and its own notification channels.',
+    why: 'Prometheus lives on the management cluster and cannot tell me the management cluster is unreachable. This runs on the off-site mini PC and checks the handful of endpoints that matter from outside the house.',
+    watch: [
+      'Its value comes entirely from running somewhere the rest of the stack does not. On the same cluster it is theatre.',
+      'Certificate expiry checks here overlap with cert-manager. Overlap is fine; silent gaps are not.',
+    ],
+    links: [
+      { label: 'Uptime Kuma on GitHub', href: 'https://github.com/louislam/uptime-kuma' },
+    ],
+    related: ['prometheus', 'cert-manager'],
+  },
+  {
+    slug: 'grafana-oncall',
+    name: 'On-call rotation',
+    quadrant: 'observability',
+    ring: 'hold',
+    movement: 'none',
+    since: '2026-02',
+    tagline: 'There is one person. A rotation tool cannot fix that.',
+    what: 'The category rather than a product: escalation policies, schedules and acknowledgement tracking for alerts that need a human.',
+    why: 'On Hold because the gap it fills is real and the tool does not fill it. If I am on holiday when something fires, it fires into an empty room until I land — and no scheduling software changes who is in the room.',
+    watch: [
+      'The honest fix is a second person who knows the rack, not a second tool.',
+      'What did help was cheap: alerts state what to do, and the runbook link is in the alert itself.',
+    ],
+    links: [
+      { label: 'Alertmanager routing', href: 'https://prometheus.io/docs/alerting/latest/configuration/' },
+    ],
+    related: ['alertmanager'],
+  },
+
+  // ---------- delivery & workloads ----------
   {
     slug: 'argo-cd',
     name: 'Argo CD',
-    quadrant: 'operations',
+    quadrant: 'delivery',
     ring: 'adopt',
     movement: 'none',
     since: '2024-04',
@@ -672,7 +1017,7 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'renovate',
     name: 'Renovate',
-    quadrant: 'operations',
+    quadrant: 'delivery',
     ring: 'adopt',
     movement: 'none',
     since: '2024-08',
@@ -692,7 +1037,7 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'prometheus',
     name: 'Prometheus',
-    quadrant: 'operations',
+    quadrant: 'observability',
     ring: 'adopt',
     movement: 'none',
     since: '2024-05',
@@ -712,7 +1057,7 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'grafana',
     name: 'Grafana',
-    quadrant: 'operations',
+    quadrant: 'observability',
     ring: 'adopt',
     movement: 'none',
     since: '2024-05',
@@ -731,7 +1076,7 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'loki',
     name: 'Loki',
-    quadrant: 'operations',
+    quadrant: 'observability',
     ring: 'adopt',
     movement: 'none',
     since: '2024-05',
@@ -750,7 +1095,7 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'forgejo',
     name: 'Forgejo',
-    quadrant: 'operations',
+    quadrant: 'delivery',
     ring: 'adopt',
     movement: 'none',
     since: '2025-02',
@@ -769,13 +1114,13 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'flux',
     name: 'Flux CD',
-    quadrant: 'operations',
-    ring: 'assess',
+    quadrant: 'delivery',
+    ring: 'research',
     movement: 'none',
     since: '2025-06',
     tagline: 'The other GitOps answer. Still curious.',
     what: 'A set of GitOps controllers built as composable Kubernetes resources, with no UI of its own and first-class Helm and Kustomize reconciliation.',
-    why: 'Argo CD works and the web UI earns its keep during an incident. Assessing Flux because the controller-per-concern model is cleaner and because knowing both makes the choice informed rather than habitual.',
+    why: 'Argo CD works and the web UI earns its keep during an incident. Researching Flux because the controller-per-concern model is cleaner and because knowing both makes the choice informed rather than habitual.',
     watch: [
       'Migrating GitOps tools mid-flight means two controllers briefly believe they own the same resources.',
       'No UI is a feature until you are debugging at 2am on a phone.',
@@ -788,13 +1133,13 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'opentelemetry',
     name: 'OpenTelemetry',
-    quadrant: 'operations',
-    ring: 'assess',
+    quadrant: 'observability',
+    ring: 'research',
     movement: 'new',
     since: '2026-08',
     tagline: 'Traces are the gap between the metrics and the logs.',
     what: 'A vendor-neutral standard and toolkit for traces, metrics and logs, with a collector that receives, processes and exports telemetry to whatever backend you run.',
-    why: 'Metrics say something is slow and logs say what it printed. Neither says where the time went across services. Assessing the collector first, because that part is useful even before anything emits a trace.',
+    why: 'Metrics say something is slow and logs say what it printed. Neither says where the time went across services. Researching the collector first, because that part is useful even before anything emits a trace.',
     watch: [
       'Tracing is only worth it if something actually emits spans — instrumenting the apps is the real work.',
       'The collector becomes a dependency of everything that reports to it. Size and monitor it like one.',
@@ -807,7 +1152,7 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'home-assistant',
     name: 'Home Assistant',
-    quadrant: 'operations',
+    quadrant: 'delivery',
     ring: 'adopt',
     movement: 'none',
     since: '2024-06',
@@ -826,7 +1171,7 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'immich',
     name: 'Immich',
-    quadrant: 'operations',
+    quadrant: 'delivery',
     ring: 'adopt',
     movement: 'in',
     since: '2025-04',
@@ -846,7 +1191,7 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'jellyfin',
     name: 'Jellyfin',
-    quadrant: 'operations',
+    quadrant: 'delivery',
     ring: 'adopt',
     movement: 'none',
     since: '2024-06',
@@ -865,7 +1210,7 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'vaultwarden',
     name: 'Vaultwarden',
-    quadrant: 'operations',
+    quadrant: 'delivery',
     ring: 'adopt',
     movement: 'none',
     since: '2024-06',
@@ -885,7 +1230,7 @@ export const radarEntries: RadarEntry[] = [
   {
     slug: 'nuxt',
     name: 'Nuxt',
-    quadrant: 'operations',
+    quadrant: 'delivery',
     ring: 'adopt',
     movement: 'new',
     since: '2026-09',
@@ -911,7 +1256,7 @@ export const radarGeometry = {
   size: 880,
   get center() { return this.size / 2 },
   /** Outer edge of each ring, as a fraction of the radius. */
-  ringStops: [0.31, 0.56, 0.79, 1] as const,
+  ringStops: [0.42, 0.63, 0.83, 1] as const,
   radius: 396,
   blipRadius: 9,
   /** Keep blips off the ring and quadrant boundaries. */
@@ -1090,6 +1435,22 @@ export function radarQuadrant(id: string): RadarQuadrant | undefined {
 export function radarRing(id: RingId): RadarRing | undefined {
   return radarRings.find(r => r.id === id)
 }
+
+/** Chip/border colour per ring, keyed by id so adding a ring cannot shift it. */
+export const ringZone: Record<string, string> = {
+  adopt: 'prod',
+  trial: 'stage',
+  research: 'mgmt',
+  hold: 'dmz',
+}
+
+/** The short chip suffix the stylesheet keys colours off. */
+export function zoneChip(zone: string | undefined): string {
+  return ({ prod: 'p', stage: 's', mgmt: 'm', ceph: 'c', dmz: 'd', pink: 'k' } as Record<string, string>)[zone ?? ''] ?? 'p'
+}
+
+/** "Quadrants" is the radar convention, and a lie above four of them. */
+export const sectorNoun = radarQuadrants.length === 4 ? 'quadrants' : 'sectors'
 
 export function radarCounts() {
   return radarRings.map(ring => ({

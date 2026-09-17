@@ -73,7 +73,7 @@ function dim(b: PlacedBlip): boolean {
     >
       <title id="radar-title">The tech radar</title>
       <desc id="radar-desc">
-        {{ entries.length }} tools placed in {{ radarQuadrants.length }} quadrants and
+        {{ entries.length }} tools placed in {{ radarQuadrants.length }} {{ sectorNoun }} and
         {{ radarRings.length }} rings, from Adopt at the centre to Hold at the edge.
         The same entries are listed as text below the chart.
       </desc>

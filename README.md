@@ -181,6 +181,8 @@ app/
     storage.vue        Ceph OSDs, pools, CRUSH, backups
     security.vue       zone chain diagram, firewall policy, detection
     network.vue        VLANs, hardware, DNS, remote access
+    ai-data.vue        local models, the databases under them, the data path
+    observability.vue  metrics, logs, and the rules allowed to wake me
     radar/index.vue    the tech radar chart and the text version of it
     radar/[slug].vue   one page per tool, pre-rendered from the data
     log.vue            build log and incidents, newest first
@@ -222,7 +224,9 @@ lines for them anywhere, and that is Nuxt doing it, not a missing edit.
 
 ### Colours
 
-Zone colours live in one Sass map at the top of `app/assets/scss/_tokens.scss`:
+Zone colours live in one Sass map at the top of `app/assets/scss/_tokens.scss`.
+The radar has six sectors and there are five zones, so the sixth sector uses
+the ghost's own pink through the `.chip.k` and `[data-zone="pink"]` rules:
 
 ```scss
 $zones: (
@@ -259,8 +263,8 @@ detail page at `/radar/<slug>` all follow from it.
 {
   slug: 'cilium',
   name: 'Cilium',
-  quadrant: 'platform',        // radarQuadrants[].id
-  ring: 'assess',              // adopt | trial | assess | hold
+  quadrant: 'platform',        // radarQuadrants[].id — six of them
+  ring: 'research',            // adopt | trial | research | hold
   movement: 'new',             // none | new | in | out
   since: '2026-08',
   tagline: '...',              // one line, shown in the legend
@@ -272,12 +276,17 @@ detail page at `/radar/<slug>` all follow from it.
 }
 ```
 
-Quadrants and rings are data too, so renaming a quadrant — or having five of
-them — is an edit to `radarQuadrants`, not to the geometry. The chart divides
-the circle by however many there are.
+Sectors and rings are data too. The chart divides the circle by however many
+sectors are declared — there are six — and `radarGeometry.ringStops` sets where
+each ring ends as a fraction of the radius. Adopt holds most of the entries, so
+it gets the widest band.
+
+The rings are Adopt, Trial, Research and Hold. Research is the usual radar's
+Assess: read the docs, maybe built a toy, nothing running.
 
 Blip positions are derived from the slug with a small FNV-1a hash, then
-relaxed apart until no two are closer than `radarGeometry.minGap`. That means
+relaxed apart until no two are closer than `radarGeometry.minGap`, clamping
+each back inside its own ring band and sector arc. That means
 positions are identical on the server and in the browser, stable between
 builds, and an entry only moves when its ring or quadrant changes. Position
 *within* a ring carries no meaning — it exists so the labels do not collide.

@@ -46,13 +46,10 @@ useSeoMeta({
       <h1>{{ entry.name }}</h1>
       <p class="lede">{{ entry.tagline }}</p>
       <div class="tagline">
-        <ZoneChip :zone="ring.id === 'adopt' ? 'p' : ring.id === 'trial' ? 's' : ring.id === 'assess' ? 'm' : 'd'">
+        <ZoneChip :zone="zoneChip(ringZone[ring.id])">
           {{ ring.name }}
         </ZoneChip>
-        <ZoneChip
-          :zone="{ prod: 'p', stage: 's', mgmt: 'm', ceph: 'c', dmz: 'd' }[quadrant.zone] ?? 'p'"
-          to="/radar"
-        >
+        <ZoneChip :zone="zoneChip(quadrant.zone)" to="/radar">
           {{ quadrant.name }}
         </ZoneChip>
         <span class="chip">since {{ entry.since }}</span>

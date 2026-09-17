@@ -3,13 +3,19 @@
 // ---------- the radar chart ----------
 .radar {
   margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .radar-svg {
   display: block;
   width: 100%;
   height: auto;
-  // The quadrant labels sit outside the circle; give them room.
+  // The chart is square, so cap it by viewport height as well as width — a
+  // radar you have to scroll to see all of is not much of a radar.
+  max-width: min(960px, 84vh);
+  // The sector labels sit outside the circle; give them room.
   overflow: visible;
 }
 
@@ -85,6 +91,7 @@
 }
 
 .radar-key {
+  align-self: center;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
