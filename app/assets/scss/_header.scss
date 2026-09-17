@@ -23,7 +23,7 @@
 }
 
 .top-name {
-  font: 500 17px/1 #{$display};
+  font: 500 17px/1 $display;
   letter-spacing: -.01em;
   margin-right: auto;
   color: var(--ink);
@@ -31,7 +31,7 @@
 }
 
 .top-link {
-  font: 400 14px #{$sans};
+  font: 400 14px $sans;
   color: var(--dim);
   border: 0;
   white-space: nowrap;
@@ -96,7 +96,7 @@
   border-top: 1px solid var(--line);
 
   a {
-    font: 400 14px #{$sans};
+    font: 400 14px $sans;
     color: var(--dim);
     border: 0;
 
@@ -104,7 +104,7 @@
   }
 
   span {
-    font: 500 11px #{$mono};
+    font: 500 11px $mono;
     letter-spacing: .07em;
     color: var(--faint);
     display: block;

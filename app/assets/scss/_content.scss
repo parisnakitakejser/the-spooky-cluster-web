@@ -10,7 +10,7 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 6px 14px 6px 10px;
-  font: 500 12px #{$mono};
+  font: 500 12px $mono;
   color: var(--dim);
 
   i {
@@ -73,13 +73,13 @@ a.chip {
   &[data-zone="pink"] { --tag: #{$pink}; }
 
   h2 {
-    font: 400 clamp(24px, 3vw, 32px)/1.15 #{$display};
+    font: 400 clamp(24px, 3vw, 32px)/1.15 $display;
     letter-spacing: -.02em;
     margin: 0 0 10px;
   }
 
   h3 {
-    font: 500 16px #{$sans};
+    font: 500 16px $sans;
     margin: 32px 0 12px;
   }
 
@@ -98,7 +98,7 @@ a.chip {
 }
 
 .u-slot {
-  font: 500 11px #{$mono};
+  font: 500 11px $mono;
   color: var(--faint);
   letter-spacing: .08em;
   margin: 0 0 6px;
@@ -118,12 +118,12 @@ a.chip {
 
   &:hover { background: rgba(59, 45, 99, .22); }
 
-  .u { font: 500 12px #{$mono}; color: var(--faint); }
-  .n { font: 500 15px #{$sans}; }
-  .d { font: 400 13px #{$mono}; color: var(--dim); overflow-wrap: anywhere; }
+  .u { font: 500 12px $mono; color: var(--faint); }
+  .n { font: 500 15px $sans; }
+  .d { font: 400 13px $mono; color: var(--dim); overflow-wrap: anywhere; }
 
   .t {
-    font: 500 11px #{$mono};
+    font: 500 11px $mono;
     letter-spacing: .05em;
     padding: 3px 9px;
     border-radius: 4px;
@@ -134,7 +134,7 @@ a.chip {
   &.empty {
     opacity: .42;
 
-    .n { font: 400 13px #{$mono}; color: var(--faint); }
+    .n { font: 400 13px $mono; color: var(--faint); }
   }
 
   @include narrow {
@@ -170,12 +170,12 @@ a.chip {
 
   b {
     display: block;
-    font: 500 28px/1.1 #{$mono};
+    font: 500 28px/1.1 $mono;
     letter-spacing: -.02em;
     margin-bottom: 4px;
   }
 
-  span { font: 400 13px #{$sans}; color: var(--dim); }
+  span { font: 400 13px $sans; color: var(--dim); }
 
   @each $key, $zone in $zones {
     &.#{$key} b { color: map.get($zone, color); }
@@ -197,7 +197,7 @@ a.chip {
   background: var(--rail);
 
   h3 {
-    font: 500 15px #{$sans};
+    font: 500 15px $sans;
     margin: 0 0 6px;
     color: var(--zc, var(--ink));
   }
@@ -209,18 +209,18 @@ a.chip {
     line-height: 1.6;
   }
 
-  code { font: 400 12px #{$mono}; color: var(--faint); }
+  code { font: 400 12px $mono; color: var(--faint); }
 }
 
 // ---------- tables ----------
 .tbl {
   width: 100%;
   border-collapse: collapse;
-  font: 400 13px #{$mono};
+  font: 400 13px $mono;
 
   th {
     text-align: left;
-    font: 500 11px #{$mono};
+    font: 500 11px $mono;
     letter-spacing: .07em;
     color: var(--faint);
     padding: 0 14px 10px 0;
@@ -249,7 +249,7 @@ a.chip {
   strong { color: var(--ink); font-weight: 500; }
 
   code {
-    font: 400 13px #{$mono};
+    font: 400 13px $mono;
     background: var(--rail);
     border: 1px solid var(--line);
     border-radius: 4px;
@@ -275,12 +275,12 @@ a.chip {
   border-bottom: 1px solid var(--line);
 
   time {
-    font: 500 12px #{$mono};
+    font: 500 12px $mono;
     color: var(--faint);
     padding-top: 4px;
   }
 
-  h3 { font: 500 17px #{$sans}; margin: 0 0 8px; }
+  h3 { font: 500 17px $sans; margin: 0 0 8px; }
 
   p {
     margin: 0;
@@ -317,7 +317,7 @@ a.chip {
   &.static:hover { transform: none; }
 
   h3 {
-    font: 500 17px #{$sans};
+    font: 500 17px $sans;
     margin: 0 0 6px;
     color: var(--ink);
   }
@@ -332,7 +332,7 @@ a.chip {
   .meta {
     display: block;
     margin-top: 12px;
-    font: 500 11px #{$mono};
+    font: 500 11px $mono;
     letter-spacing: .06em;
     color: var(--zc, var(--faint));
   }
@@ -359,7 +359,7 @@ a.chip {
   gap: 18px;
   flex-wrap: wrap;
   margin-top: 16px;
-  font: 400 12px #{$mono};
+  font: 400 12px $mono;
   color: var(--faint);
 
   span {
@@ -547,23 +547,3 @@ a.chip {
   }
 }
 
-// ---------- section navigation ----------
-.subnav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0 0 30px;
-
-  .chip {
-    color: var(--dim);
-    border-bottom: 1px solid var(--line);
-
-    &:hover { color: var(--ink); border-color: var(--faint); }
-
-    &.on {
-      color: var(--ink);
-      border-color: $pink;
-      background: var(--rail);
-    }
-  }
-}

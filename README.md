@@ -240,6 +240,14 @@ lines for them anywhere, and that is Nuxt doing it, not a missing edit.
 
 ## Changing things
 
+### Fonts
+
+`$display`, `$sans` and `$mono` in `_tokens.scss` are plain Sass lists, so
+use them bare — `font: 400 14px $sans`. Wrapping one in `#{}` flattens the
+stack into a single quoted family name, which is invalid CSS and silently
+falls back to a default face. The only places that need interpolation are the
+custom property declarations in `_base.scss`, where Sass requires it.
+
 ### Colours
 
 Zone colours live in one Sass map at the top of `app/assets/scss/_tokens.scss`.
