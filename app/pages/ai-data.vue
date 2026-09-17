@@ -8,6 +8,8 @@ const glance = [
   { value: '0', label: 'GPUs, currently' },
   { value: '4', label: 'models pulled' },
   { value: '3', label: 'databases to back up' },
+  { value: '3', label: 'lake layers' },
+  { value: '3', label: 'query engines' },
   { value: '14 TB', label: 'on the k8s-rbd pool' },
 ]
 
@@ -29,6 +31,15 @@ const stores = {
     ['Mosquitto', 'crypt · small RBD volume', 'The MQTT bus for sensors and Frigate', 'Config only; messages are transient'],
     ['Ceph RBD', 'ossuary', 'Every persistent volume above', '3× replication, plus Restic off-site'],
     ['Model weights', 'ossuary · CephFS', 'Ollama model files', 'No — they are re-downloadable'],
+  ],
+}
+
+const layers = {
+  columns: ['Layer', 'What lands there', 'Written by', 'Who may read it'],
+  rows: [
+    ['Bronze', 'Raw records exactly as they arrived, nothing dropped', 'Flink from Kafka, PyIceberg for batch', 'Me only'],
+    ['Silver', 'Typed, deduplicated, late-arriving rows resolved', 'PyIceberg, Spark when it is large', 'Me, and the gold jobs'],
+    ['Gold', 'Modelled tables built for a question someone asks', 'Spark, gated by Soda before promotion', 'Dashboards and notebooks'],
   ],
 }
 
@@ -85,6 +96,31 @@ const pipeline = [
     <div class="prose spaced">
       <p>One database engine rather than four was a deliberate choice: <NuxtLink to="/radar/postgresql">PostgreSQL</NuxtLink> backs every app that needs one, so there is a single dump to test restoring and a single major-version upgrade to schedule. Embeddings go in the same database through <NuxtLink to="/radar/pgvector">pgvector</NuxtLink>, next to the rows they describe, which means search results and their source stay in one backup.</p>
       <p>Model weights are the exception that proves the rule. They are gigabytes each, they sit on CephFS, and they are deliberately not in the backup set — losing them costs a download, not a memory.</p>
+    </div>
+  </section>
+
+  <section class="unit" data-zone="mgmt">
+    <p class="u-slot">the lake</p>
+    <h2>How a row gets from a sensor to a dashboard</h2>
+    <p>Same shape as the <NuxtLink to="/security">security chain</NuxtLink>, and for the same reason: the interesting part is not the stages, it is what governs each hop between them. Data runs left to right, policy and quality come down, and the engines that do the work come up from below.</p>
+    <DataLakeChain />
+    <div class="prose spaced">
+      <p>Everything in the middle row is the same kind of table in the same object store — <NuxtLink to="/radar/apache-iceberg">Apache Iceberg</NuxtLink> on top of Ceph's S3 gateway, which is what makes snapshots, schema evolution and time travel available at every stage rather than only at the end. A bad transformation is a rollback to yesterday's snapshot, not a restore.</p>
+      <p>The reason bronze exists at all is that cleaning is a guess. Keeping the raw record means a wrong guess costs a re-run rather than a re-collection — and sensor data cannot be re-collected. The <NuxtLink to="/radar/apache-kafka">Kafka</NuxtLink> buffer in front of it is the same argument one step earlier: a replay window means an ingest job can fail for an afternoon without losing the afternoon.</p>
+    </div>
+  </section>
+
+  <section class="unit" data-zone="stage">
+    <p class="u-slot">layers</p>
+    <h2>Three layers, and who is allowed into each</h2>
+    <p>The layer boundary and the permission boundary are the same line, which is the only reason the policy stays small enough to read.</p>
+    <DataTable :columns="layers.columns" :rows="layers.rows" />
+    <div class="prose spaced">
+      <p><NuxtLink to="/radar/apache-ranger"><strong>Ranger</strong></NuxtLink> holds that policy in one place instead of in each engine's own config. It does row filtering and column masking, so a table with a sensor location in it can be readable without the location being readable — and every access is audited whether it was allowed or denied.</p>
+      <p><NuxtLink to="/radar/apache-airflow"><strong>Airflow</strong></NuxtLink> owns one DAG per hop rather than one enormous pipeline. A failed silver job does not block a bronze ingest, backfilling a single day is a task re-run rather than a replay of everything, and the dependency graph is the documentation. It decides <em>when</em>; it does not do the work.</p>
+      <p><strong>The engines do the work</strong>, and which one depends on the shape of the hop. <NuxtLink to="/radar/apache-flink">Flink</NuxtLink> handles the streaming ingest off Kafka, where the job never finishes and state has to survive a restart. <NuxtLink to="/radar/apache-spark">Spark</NuxtLink> takes the heavy batch rewrites and the compaction. <NuxtLink to="/radar/pyiceberg">PyIceberg</NuxtLink> takes everything else — and "everything else" turned out to be most of it, because at this scale a Python process that talks to the catalogue directly beats standing up a cluster to move four hundred megabytes.</p>
+      <p><NuxtLink to="/radar/soda"><strong>Soda</strong></NuxtLink> is the gate between layers. Checks run against the output of a hop before it is promoted, so a null flood or a schema drift fails the run rather than quietly becoming gold-layer truth. This is the piece I most wish I had added first: without it, bad data is discovered by a dashboard looking wrong, which is weeks later and much harder to trace.</p>
+      <p>What I gave up: this is a lot of machinery for a household's worth of data. It exists because the patterns are the ones I want to be fluent in, and a lake with real governance on it is not something you get to practise at small scale anywhere else — the same argument as the rest of the <NuxtLink to="/about">practice rack</NuxtLink>.</p>
     </div>
   </section>
 
