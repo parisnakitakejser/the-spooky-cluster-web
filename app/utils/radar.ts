@@ -1435,6 +1435,13 @@ export const radarEntries: RadarEntry[] = [
 
 export const radarGeometry = {
   size: 880,
+  /**
+   * Horizontal room for the sector labels. Two sectors sit at the circle's
+   * left and right extremes, and their labels used to run outside the SVG box
+   * and over whatever was beside it. The viewBox is widened instead, so the
+   * element's box is the real extent of the drawing.
+   */
+  padX: 116,
   get center() { return this.size / 2 },
   /** Outer edge of each ring, as a fraction of the radius. */
   ringStops: [0.42, 0.63, 0.83, 1] as const,

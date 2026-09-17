@@ -23,12 +23,15 @@ const g = radarGeometry
 
 /**
  * The SVG scales to its box and keeps its aspect, so a viewBox coordinate is
- * a percentage of the stage. Flip the card away from whichever edge is close.
+ * a percentage of the stage — accounting for the horizontal padding the
+ * viewBox reserves for the sector labels. Flip the card away from whichever
+ * edge is close.
  */
 const tip = computed(() => {
   const b = current.value
   if (!b) return null
-  const xPct = (b.x / g.size) * 100
+  const vbWidth = g.size + g.padX * 2
+  const xPct = ((b.x + g.padX) / vbWidth) * 100
   const yPct = (b.y / g.size) * 100
   const below = yPct < 30
   const side = xPct < 26 ? 'left' : xPct > 74 ? 'right' : 'centre'
@@ -67,7 +70,7 @@ function setHover(slug: string | null) {
           aria-hidden="true"
         >
           <p class="radar-tip-head">
-            <span class="radar-tip-n" :style="`--zc:var(--${tip.blip.quadrant.zone})`">{{ tip.blip.n }}</span>
+            <RadarMark :n="tip.blip.n" :movement="tip.blip.entry.movement" :zone="tip.blip.quadrant.zone" />
             {{ tip.blip.entry.name }}
           </p>
           <p class="radar-tip-meta">

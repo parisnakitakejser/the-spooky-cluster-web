@@ -38,18 +38,20 @@ const spokes = computed(() =>
   }),
 )
 
-/** Quadrant names, pushed outside the circle at the middle of their arc. */
+/**
+ * Sector names, centred just outside the circle on the middle of their arc.
+ * Always centred rather than start/end anchored: an anchored label grows away
+ * from the chart and off the canvas, a centred one grows both ways and stays
+ * inside the padding the viewBox reserves for it.
+ */
 const quadrantLabels = computed(() =>
   radarQuadrants.map((quadrant, i) => {
     const a = -Math.PI / 2 + (i + 0.5) * slice
-    const r = g.radius + 30
-    const x = g.center + r * Math.cos(a)
-    const y = g.center + r * Math.sin(a)
+    const r = g.radius + 26
     return {
       quadrant,
-      x,
-      y,
-      anchor: Math.abs(Math.cos(a)) < 0.1 ? 'middle' : (Math.cos(a) > 0 ? 'start' : 'end'),
+      x: g.center + r * Math.cos(a),
+      y: g.center + r * Math.sin(a),
     }
   }),
 )
@@ -70,7 +72,7 @@ function dim(b: PlacedBlip): boolean {
 
 <template>
   <svg
-    :viewBox="`0 0 ${g.size} ${g.size}`"
+    :viewBox="`${-g.padX} 0 ${g.size + g.padX * 2} ${g.size}`"
     class="radar-svg"
     role="img"
     aria-labelledby="radar-title radar-desc"
