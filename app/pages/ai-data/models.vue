@@ -50,7 +50,7 @@ const models = {
     <p class="u-slot">the missing part</p>
     <h2>The GPU slot is still a slot</h2>
     <div class="prose">
-      <p>U27 and U28 are held for the next compute node. Whether that node is <code>crypt-04</code> or something with a card in it is the open question on the <NuxtLink to="/log">build log</NuxtLink>, and the answer decides several entries on the <NuxtLink to="/radar">radar</NuxtLink> at once — <NuxtLink to="/radar/faster-whisper">faster-whisper</NuxtLink> for voice, larger models for anything reasoning-shaped, and image work that is currently not attempted at all.</p>
+      <p>Two rack units are held for the next compute node. Whether that node is <code>crypt-04</code> or something with a card in it is the open question on the <NuxtLink to="/log">build log</NuxtLink>, and the answer decides several entries on the <NuxtLink to="/radar">radar</NuxtLink> at once — <NuxtLink to="/radar/faster-whisper">faster-whisper</NuxtLink> for voice, larger models for anything reasoning-shaped, and image work that is currently not attempted at all.</p>
       <p>The honest position: CPU inference proved the plumbing and the privacy argument. It has not proved the models are good enough to rely on, and it cannot until the hardware changes.</p>
     </div>
   </section>

@@ -71,7 +71,7 @@ const policy = {
     <div class="prose">
       <p>Suricata runs inline at the edge on the WAN interface and mirrors the DMZ segment. Wazuh agents sit on every node, watching file integrity on the Kubernetes config paths and shipping auth logs. Alerts go to a private Matrix room, and anything above medium severity also rings my phone.</p>
       <p>The part most homelab write-ups leave out: this design assumes the attacker comes from the internet. It does very little about a malicious container image I pulled myself, and nothing at all about someone with physical access to the garage. Renovate pinning digests helps with the first. The second is a lock and a hope.</p>
-      <p>The other honest gap is that I am one person. There's no rotation, no second pair of eyes on a firewall change, and if I'm on holiday when something fires, it fires into an empty room until I land.</p>
+      <p>The other honest gap is that I am one person. There's no rotation and no second pair of eyes on a firewall change, so an alert is only as fast as whenever I next look at my phone.</p>
     </div>
   </section>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 usePageSeo({
   title: 'the spooky cluster — homelab',
-  description: 'A 42U homelab near Aarhus running Kubernetes, Ceph and a segmented security zone. Hardware, topology and numbers.',
+  description: 'A 42U homelab running Kubernetes, Ceph and a segmented security zone. Hardware, topology and numbers.',
 })
 
 /** Each tile carries its own zone colour, so `zone` rides along with the number. */
@@ -14,19 +14,6 @@ const headline = [
   { value: '7', label: 'network zones', zone: 'd' },
 ]
 
-const cards = [
-  { to: '/about', zone: 'stage', title: 'About', body: 'Why a practice rack exists, what the family ended up depending on, and photographs of the actual room.', meta: 'the person · the practice · the rules' },
-  { to: '/projects', zone: 'ceph', title: 'Projects', body: 'Things built on the rack rather than run on it. Astrona, Jubelio, and whatever comes next.', meta: 'building · live · archived' },
-  { to: '/rack', zone: 'mgmt', title: 'The rack', body: 'All 42U, front and back, including the empty slots and what I\'m saving them for.', meta: 'elevation · cabling · airflow' },
-  { to: '/compute', zone: 'prod', title: 'Compute', body: 'Three separate Kubernetes clusters and why they aren\'t three namespaces.', meta: 'prod · stage · management' },
-  { to: '/storage', zone: 'ceph', title: 'Storage', body: 'Ceph across 36 disks, the CRUSH layout, and the backup that isn\'t Ceph.', meta: 'osds · pools · backups' },
-  { to: '/security', zone: 'dmz', title: 'Security', body: 'The cleaning zone: DMZ, quarantine, secure, SIEM, and the rules between them.', meta: 'zones · policy · detection' },
-  { to: '/network', zone: 'stage', title: 'Network', body: 'VLANs, routing, DNS, and the decision to run 10G only where it earns its heat.', meta: 'vlans · routing · dns' },
-  { to: '/ai-data', zone: 'mgmt', title: 'AI & Data', body: 'Five pages: local models, the data lake, agents, MCP, and the stores underneath. Nothing leaves the house to be processed.', meta: 'models · data lake · agents · mcp · stores' },
-  { to: '/observability', zone: 'pink', title: 'Observability', body: 'Metrics, logs, and the eight rules that are allowed to wake me at three in the morning.', meta: 'metrics · logs · alerts' },
-  { to: '/radar', zone: 'prod', title: 'Tech radar', body: 'Every tool in the rack, ringed by how much I trust it — and a page of detail on each one.', meta: 'adopt · trial · research · hold' },
-  { to: '/log', zone: 'mgmt', title: 'Build log', body: 'What changed, what broke, and what I\'d do differently. Newest first.', meta: 'changes · incidents' },
-]
 </script>
 
 <template>
@@ -35,7 +22,7 @@ const cards = [
 
     <div>
       <h1>the spooky cluster</h1>
-      <p>One 42U rack in a garage outside Aarhus. Three Kubernetes clusters, a Ceph pool, and everything from the internet forced through a cleaning zone before it touches anything that matters. Hardware, topology and the numbers I'm not proud of.</p>
+      <p>One 42U rack in a garage somewhere in Denmark. Three Kubernetes clusters, a Ceph pool, and everything from the internet forced through a cleaning zone before it touches anything that matters. Hardware, topology and the numbers I'm not proud of.</p>
       <div class="hero-strip">
         <ZoneChip zone="p" to="/compute">prod</ZoneChip>
         <ZoneChip zone="s" to="/compute">stage</ZoneChip>
@@ -55,25 +42,6 @@ const cards = [
         <b>{{ stat.value }}</b>
         <span>{{ stat.label }}</span>
       </div>
-    </div>
-  </section>
-
-  <section class="unit" data-zone="prod">
-    <p class="u-slot">the rest of the site</p>
-    <h2>Where to go next</h2>
-    <p>Each section stands alone. If you only read one, read the security page — it's the part that took longest and the part most homelab write-ups skip.</p>
-    <div class="deck">
-      <NuxtLink
-        v-for="card in cards"
-        :key="card.to"
-        class="card"
-        :to="card.to"
-        :style="`--zc:var(--${card.zone})`"
-      >
-        <h3>{{ card.title }}</h3>
-        <p>{{ card.body }}</p>
-        <span class="meta">{{ card.meta }}</span>
-      </NuxtLink>
     </div>
   </section>
 

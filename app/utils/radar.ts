@@ -311,7 +311,7 @@ export const radarEntries: RadarEntry[] = [
     since: '2024-06',
     tagline: 'Encrypted, deduplicated, and boring in the right way.',
     what: 'A backup program that encrypts client-side, deduplicates by content, and stores snapshots in a repository on local disk, SFTP, S3 and others. Restores are file-level out of any snapshot.',
-    why: 'Copy two goes nightly over WireGuard to a mini PC 40 km away; copy three goes monthly to Backblaze B2. Encrypted before it leaves, so neither destination holds a key.',
+    why: 'Copy two goes nightly over WireGuard to a machine at a second site; copy three goes monthly to Backblaze B2. Encrypted before it leaves, so neither destination holds a key.',
     watch: [
       'An untested backup is a rumour. Restores are tested monthly here: one random file, one whole volume.',
       'Pruning is the slow operation, not backing up. Schedule it where you will not notice.',
@@ -467,7 +467,7 @@ export const radarEntries: RadarEntry[] = [
     since: '2026-06',
     tagline: 'Local models, and nothing leaving the rack to answer a question.',
     what: 'A runtime that pulls quantised open-weight models and serves them over an HTTP API, handling model files, memory and context for you. It is llama.cpp underneath with the operational parts smoothed off.',
-    why: 'The reason this quadrant exists. Trial rather than Adopt because it runs on CPU today and a prompt takes long enough that I notice — the GPU that would fix it is still a reserved U in the rack.',
+    why: 'The reason this quadrant exists. Trial rather than Adopt because it runs on CPU today and a prompt takes long enough that I notice — the GPU that would fix it is still a reserved slot in the rack.',
     watch: [
       'CPU inference is usable for small models and a test of patience for anything else. Know which you are doing.',
       'Model weights are gigabytes each and they accumulate. They live on Ceph and they are not backed up — they are re-downloadable.',
@@ -1144,7 +1144,7 @@ export const radarEntries: RadarEntry[] = [
     since: '2026-05',
     tagline: 'The outside view, for when the inside view is the thing that is down.',
     what: 'A self-hosted uptime monitor: HTTP, TCP and certificate checks on a schedule, with a status page and its own notification channels.',
-    why: 'Prometheus lives on the management cluster and cannot tell me the management cluster is unreachable. This runs on the off-site mini PC and checks the handful of endpoints that matter from outside the house.',
+    why: 'Prometheus lives on the management cluster and cannot tell me the management cluster is unreachable. This runs on the off-site machine and checks the handful of endpoints that matter from outside the house.',
     watch: [
       'Its value comes entirely from running somewhere the rest of the stack does not. On the same cluster it is theatre.',
       'Certificate expiry checks here overlap with cert-manager. Overlap is fine; silent gaps are not.',
@@ -1163,7 +1163,7 @@ export const radarEntries: RadarEntry[] = [
     since: '2026-02',
     tagline: 'There is one person. A rotation tool cannot fix that.',
     what: 'The category rather than a product: escalation policies, schedules and acknowledgement tracking for alerts that need a human.',
-    why: 'On Hold because the gap it fills is real and the tool does not fill it. If I am on holiday when something fires, it fires into an empty room until I land — and no scheduling software changes who is in the room.',
+    why: 'On Hold because the gap it fills is real and the tool does not fill it. With one responder an alert waits until I see it, and no scheduling software changes how many people are on the rota.',
     watch: [
       'The honest fix is a second person who knows the rack, not a second tool.',
       'What did help was cheap: alerts state what to do, and the runbook link is in the alert itself.',

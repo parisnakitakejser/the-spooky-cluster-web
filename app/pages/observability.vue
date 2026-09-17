@@ -19,7 +19,7 @@ const stack = {
     ['Grafana', 'Dashboards over metrics and logs', 'séance (mgmt)', 'One place to correlate both'],
     ['Loki', 'Log aggregation, 30-day retention', 'séance (mgmt)', 'Cheap enough to keep everything'],
     ['node_exporter', 'Host metrics on every machine', 'all nodes', 'Where the real alerts come from'],
-    ['Uptime Kuma', 'External checks on key endpoints', "parents' house", 'The one thing not in this rack'],
+    ['Uptime Kuma', 'External checks on key endpoints', 'a second site', 'The one thing not in this rack'],
   ],
 }
 
@@ -66,7 +66,7 @@ const alerts = {
     <DataTable :columns="stack.columns" :rows="stack.rows" />
     <div class="prose spaced">
       <p><NuxtLink to="/radar/prometheus">Prometheus</NuxtLink> pulls rather than receives, which means a target that vanishes is itself a signal — a push-based system just goes quiet and quiet looks like healthy. <NuxtLink to="/radar/loki">Loki</NuxtLink> indexes labels rather than log content, so keeping thirty days of everything costs disk rather than a small fortune in index.</p>
-      <p>The exception to the rule is deliberate: <NuxtLink to="/radar/uptime-kuma">Uptime Kuma</NuxtLink> runs on the backup mini PC 40 km away. Prometheus cannot tell me the management cluster is unreachable, because it would be unreachable too.</p>
+      <p>The exception to the rule is deliberate: <NuxtLink to="/radar/uptime-kuma">Uptime Kuma</NuxtLink> runs on the backup machine at the second site. Prometheus cannot tell me the management cluster is unreachable, because it would be unreachable too.</p>
     </div>
   </section>
 
@@ -116,7 +116,7 @@ const alerts = {
       <p>The honest half. This stack is good at telling me a machine is unhappy and bad at almost everything else.</p>
       <ul>
         <li><strong>No tracing.</strong> Metrics say a request was slow and logs say what it printed; nothing says where the time went. <NuxtLink to="/radar/opentelemetry">OpenTelemetry</NuxtLink> is in Research for exactly this, and the real work is instrumenting the apps, not running the collector.</li>
-        <li><strong>No one is on call.</strong> There is one person. If something fires while I am on a plane, it fires into an empty room until I land — and no rotation tool fixes a rotation of one.</li>
+        <li><strong>No one is on call but me.</strong> There is one responder, so an alert waits until I see it. No rotation tool fixes a rotation of one, and the honest mitigation is that nothing here is important enough to need a second.</li>
         <li><strong>Silent corruption.</strong> Ceph scrubbing catches disk-level rot. An application writing wrong-but-valid data would be backed up faithfully three times over and noticed by nobody.</li>
         <li><strong>The watcher is unwatched</strong>, mostly. Uptime Kuma checks that the stack answers; nothing checks that the alert path itself still delivers. A quarterly test alert is on the list.</li>
       </ul>

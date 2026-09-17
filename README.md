@@ -178,7 +178,8 @@ app/
   layouts/default.vue  skip link, rack rail, header, <main>
   pages/
     index.vue          home — the animated emblem, headline numbers, links out
-    rack.vue           42U front elevation, rear cabling, airflow
+    rack/index.vue     the cabinet, thermals, and what is deliberately omitted
+    rack/[group].vue   — safeguard, kubernetes, storage, switching, power
     compute.vue        prod / stage / management clusters, GitOps
     storage.vue        Ceph OSDs, pools, CRUSH, backups
     security.vue       zone chain diagram, firewall policy, detection
@@ -216,6 +217,7 @@ app/
   utils/radar.ts       radar entries, geometry and blip placement
   utils/projects.ts    projects, their status and their stack
   utils/networks.ts    network areas, and the policy from both sides
+  utils/rack.ts        rack groups, by job rather than by position
   composables/         usePageSeo — title, description and Open Graph in one call
   assets/scss/         every style on the site
 public/favicon.svg     the ghost
@@ -366,6 +368,22 @@ up the day it starts and grow a page as it earns one.
 Anything in `stack` that matches a radar slug links to that radar entry, so
 the tooling story and the project story stay joined up. Status drives the
 grouping on the index page and the colour of the card.
+
+### What this site deliberately does not say
+
+It is public, so two things are withheld on purpose and both are stated as
+withheld rather than quietly omitted:
+
+- **the slot-by-slot rack elevation** — counts, models and power figures are
+  all published; a map of which machine sits where is not;
+- **the out-of-band recovery path** — the network page says one exists and
+  says no more.
+
+Location is kept at country level, the second backup site is described
+without a relationship or a distance, and nothing states when the building
+is empty. Hardware models, VLAN numbers, RFC1918 subnets and the firewall
+policy are all published deliberately — they are the point of the site, and
+none of them are reachable from outside.
 
 ### Network areas
 

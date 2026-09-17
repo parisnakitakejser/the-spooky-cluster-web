@@ -1,11 +1,18 @@
 // Explicit, not auto-imported: the sitemap route imports this module from
 // the server side, where Nuxt's auto-imports do not apply.
 import { networkAreas } from './networks'
+import { rackGroups } from './rack'
 
 export interface SiteLink {
   to: string
   label: string
 }
+
+/** One link per rack group. */
+export const rackGroupLinks: SiteLink[] = rackGroups.map(g => ({
+  to: `/rack/${g.slug}`,
+  label: g.name,
+}))
 
 /** One link per network area, derived so a new area appears everywhere. */
 export const networkAreaLinks: SiteLink[] = networkAreas.map(a => ({
@@ -37,6 +44,7 @@ export const readingOrder: SiteLink[] = [
   { to: '/about', label: 'About' },
   { to: '/projects', label: 'Projects' },
   { to: '/rack', label: 'The rack' },
+  ...rackGroupLinks,
   { to: '/compute', label: 'Compute' },
   { to: '/storage', label: 'Storage' },
   { to: '/security', label: 'Security' },
@@ -86,6 +94,7 @@ export interface SiteSection {
  * agree without anybody remembering to pass a prop.
  */
 export const sections: SiteSection[] = [
+  { hub: { to: '/rack', label: 'Rack' }, links: rackGroupLinks },
   { hub: { to: '/network', label: 'Network' }, links: networkAreaLinks },
   { hub: { to: '/ai-data', label: 'AI & Data' }, links: aiDataPages },
   { hub: { to: '/ai-data/data-lake', label: 'Data lake' }, links: dataLakePages },
@@ -116,4 +125,4 @@ export const siteName = 'the spooky cluster'
 
 /** Canonical origin. No trailing slash — everything below appends a path. */
 export const siteUrl = 'https://spooky.rest'
-export const footerLine = 'the spooky cluster · rack 01 · Aarhus'
+export const footerLine = 'the spooky cluster · rack 01 · denmark'

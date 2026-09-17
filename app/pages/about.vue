@@ -90,7 +90,7 @@ const statusLabel: Record<string, string> = {
 const rules = [
   { title: 'It runs here or not at all', body: 'If a service needs somebody else\'s cloud to work, it does not get installed. The exceptions are DNS and the third backup copy, and both are listed on the pages that cover them.' },
   { title: 'If it is not in Git, it does not exist', body: 'No kubectl apply from a laptop. A change is a pull request, Argo CD reconciles it, and drift gets put back.' },
-  { title: 'Three copies or it is not backed up', body: 'One live, one 40 km away, one in object storage with an append-only key. Restores are tested monthly, because an untested backup is a rumour.' },
+  { title: 'Three copies or it is not backed up', body: 'One live, one at a second site, one in object storage with an append-only key. Restores are tested monthly, because an untested backup is a rumour.' },
   { title: 'Write down what broke', body: 'The build log has the incidents in it alongside the upgrades. A homelab write-up that only lists successes is a brochure.' },
 ]
 </script>

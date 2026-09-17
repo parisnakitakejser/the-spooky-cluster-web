@@ -1,7 +1,7 @@
 <script setup lang="ts">
 usePageSeo({
   title: 'AI & Data — the spooky cluster',
-  description: 'Local models, a data lake, agents and MCP servers — all of it running on hardware in a garage, because the rule is that nothing leaves the house to be processed.',
+  description: 'Local models, a data lake, agents and MCP servers — all of it running on hardware I own, because the rule is that nothing leaves the house to be processed.',
 })
 
 const glance = [

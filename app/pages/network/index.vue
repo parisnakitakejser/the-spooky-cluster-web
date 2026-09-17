@@ -92,9 +92,9 @@ const devices = {
       <ul>
         <li><strong>Phone and laptop</strong> — peers that land on the <NuxtLink to="/network/home-lan">household network</NuxtLink>, not the <NuxtLink to="/network/management">management one</NuxtLink>.</li>
         <li><strong>Management access</strong> — a second hop from there, so a stolen laptop is not instantly iDRAC access.</li>
-        <li><strong>Emergency</strong> — a serial console on the router reachable from a cheap LTE-connected Pi that can only do one thing: power-cycle the router and open a console.</li>
+        <li><strong>Recovery</strong> — there is an out-of-band path for when the router itself is the problem. How it works is the one thing on this site I will not describe, because a second way in for me is a second way in for somebody else, and it is worth less to me than it would be to them.</li>
       </ul>
-      <p>The Pi is the piece I am least happy with. It is a second way in, which is the definition of a second way in for someone else too. It is on its own VLAN with no route anywhere, and I still think about it.</p>
+      <p>That omission is deliberate and it is the only one. Everything else here is described as it actually is — but an emergency access path is exactly the sort of detail that costs nothing to withhold and could cost a great deal to publish.</p>
     </div>
   </section>
 

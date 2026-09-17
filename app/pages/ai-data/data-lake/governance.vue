@@ -33,8 +33,8 @@ const catalogue = {
 const sovereignty = {
   columns: ['Copy', 'Where it physically is', 'Who holds the key', 'Who could compel access'],
   rows: [
-    ['Live', 'The rack, in a garage near Aarhus', 'Me', 'Danish law, with me in the loop'],
-    ['Off-site', "A mini PC at my parents', 40 km away", 'Me — encrypted before it leaves', 'Same, and the copy is unreadable there'],
+    ['Live', 'The rack, in my own building', 'Me', 'Danish law, with me in the loop'],
+    ['Off-site', 'A small machine at a second site', 'Me — encrypted before it leaves', 'Same, and the copy is unreadable there'],
     ['Cloud', 'A third-party object store', 'Me — encrypted before it leaves', 'Their jurisdiction, but only over ciphertext'],
     ['Processing', 'Nowhere else. There is no fourth copy', '—', '—'],
   ],
