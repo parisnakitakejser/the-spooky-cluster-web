@@ -1,7 +1,17 @@
+// Explicit, not auto-imported: the sitemap route imports this module from
+// the server side, where Nuxt's auto-imports do not apply.
+import { networkAreas } from './networks'
+
 export interface SiteLink {
   to: string
   label: string
 }
+
+/** One link per network area, derived so a new area appears everywhere. */
+export const networkAreaLinks: SiteLink[] = networkAreas.map(a => ({
+  to: `/network/${a.slug}`,
+  label: a.name,
+}))
 
 /** The top bar, left to right. */
 export const navLinks: SiteLink[] = [
@@ -31,6 +41,7 @@ export const readingOrder: SiteLink[] = [
   { to: '/storage', label: 'Storage' },
   { to: '/security', label: 'Security' },
   { to: '/network', label: 'Network' },
+  ...networkAreaLinks,
   { to: '/ai-data', label: 'AI & Data' },
   { to: '/ai-data/models', label: 'Local models' },
   { to: '/ai-data/data-lake', label: 'Data lake' },
@@ -75,6 +86,7 @@ export interface SiteSection {
  * agree without anybody remembering to pass a prop.
  */
 export const sections: SiteSection[] = [
+  { hub: { to: '/network', label: 'Network' }, links: networkAreaLinks },
   { hub: { to: '/ai-data', label: 'AI & Data' }, links: aiDataPages },
   { hub: { to: '/ai-data/data-lake', label: 'Data lake' }, links: dataLakePages },
 ]

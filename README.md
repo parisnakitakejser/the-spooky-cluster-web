@@ -182,7 +182,8 @@ app/
     compute.vue        prod / stage / management clusters, GitOps
     storage.vue        Ceph OSDs, pools, CRUSH, backups
     security.vue       zone chain diagram, firewall policy, detection
-    network.vue        VLANs, hardware, DNS, remote access
+    network/index.vue  the VLAN plan, the hardware, DNS, remote access
+    network/[area].vue one page per network area, from the data
     about.vue          who runs it, photographs, what it hosts, the rules
     projects/index.vue things being built, grouped by status
     projects/[slug].vue one page per project, pre-rendered from the data
@@ -214,6 +215,7 @@ app/
   utils/site.ts        nav links and reading order
   utils/radar.ts       radar entries, geometry and blip placement
   utils/projects.ts    projects, their status and their stack
+  utils/networks.ts    network areas, and the policy from both sides
   composables/         usePageSeo — title, description and Open Graph in one call
   assets/scss/         every style on the site
 public/favicon.svg     the ghost
@@ -364,6 +366,16 @@ up the day it starts and grow a page as it earns one.
 Anything in `stack` that matches a radar slug links to that radar entry, so
 the tooling story and the project story stay joined up. Status drives the
 grouping on the index page and the colour of the card.
+
+### Network areas
+
+`app/utils/networks.ts`. One entry per broadcast domain; the hub table, the
+cards, the section bar and `/network/<slug>` all follow from it.
+
+Each area declares `reaches` and `reachedBy` — the firewall policy written
+from both sides. That redundancy is deliberate: a mistake shows up as a
+disagreement between two entries rather than as a hole nobody notices. Keep
+them in step with the policy table on the security page.
 
 ### The tech radar
 
