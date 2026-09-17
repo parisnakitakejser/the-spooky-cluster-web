@@ -1,36 +1,22 @@
 @use "tokens" as *;
 
-// ---------- the board: chart, key and numbered index ----------
+// ---------- the board: chart above, numbered key below ----------
 .board {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 276px;
-  gap: 40px;
-  align-items: start;
-  margin-top: 4px;
-}
-
-.board-chart {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 0;
-}
-
-.board-index-head {
-  font: 500 11px $mono;
-  letter-spacing: .08em;
-  color: var(--faint);
-  margin: 0 0 10px;
+  margin-top: 4px;
 }
 
 // The stage is exactly the chart's box, so a viewBox coordinate is a
 // percentage of it and the tooltip can be positioned in plain CSS.
-// The viewBox is wider than tall now that it reserves room for the sector
-// labels, so the stage is capped on width alone.
+// The viewBox reserves room for the sector labels, so it is wider than tall.
+// Capped by viewport height as well, since a chart you have to scroll to see
+// all of is not much of a chart.
 .radar-stage {
   position: relative;
   width: 100%;
-  max-width: 700px;
+  max-width: min(980px, 96vh);
 }
 
 .radar-svg {
@@ -309,14 +295,39 @@
   color: var(--dim);
 }
 
-// ---------- numbered index ----------
+// ---------- numbered key, below the chart ----------
+// One column per sector, wrapping to as many rows as the width allows.
+.rgroups {
+  width: 100%;
+  margin-top: 30px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 26px 30px;
+  align-items: start;
+}
+
+.rgroup-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--line);
+  font: 500 11px $mono;
+  letter-spacing: .07em;
+  color: var(--zc, var(--dim));
+  text-transform: lowercase;
+
+  span { color: var(--faint); }
+}
+
 .rindex {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: min(820px, 76vh);
-  overflow-y: auto;
-  scrollbar-width: thin;
 
   li {
     transition: opacity .14s ease;
@@ -351,22 +362,14 @@
 }
 
 @include narrow {
-  .board {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
   .radar-stage { max-width: 100%; }
 
   // A tooltip in a 400px-wide chart covers the thing it describes.
   .radar-tip { display: none; }
 
-  .rindex {
-    max-height: none;
-    columns: 2;
-    column-gap: 18px;
-
-    li { break-inside: avoid; }
+  .rgroups {
+    grid-template-columns: 1fr;
+    gap: 22px;
   }
 }
 
@@ -391,3 +394,44 @@
 
 .radar-tip .rmark { width: 23px; height: 23px; }
 .legend-list .rmark { width: 23px; height: 23px; align-self: center; }
+
+// ---------- a page with the radar key beside it ----------
+.withkey {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 244px;
+  gap: 34px;
+  align-items: start;
+}
+
+.withkey-main { min-width: 0; }
+
+.withkey-side {
+  position: sticky;
+  top: 78px;
+
+  // The current tool is passed as `hovered`, so it stays marked rather than
+  // needing a second state that means almost the same thing.
+  .rindex li.hot a { background: var(--rail); }
+}
+
+.withkey-more {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font: 400 13px $sans;
+
+  a { color: var(--dim); border-bottom-color: var(--line); }
+  a:hover { color: var(--ink); }
+}
+
+@include narrow {
+  .withkey {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .withkey-side { position: static; }
+}

@@ -211,6 +211,7 @@ app/
     SecurityChain                              the zone diagram
     RadarBoard                                 chart + numbered key, one hover state
     RadarChart RadarIndex RadarLegend          the radar's three views
+    RadarMark                                  the numbered blip shape, shared
     FlowChain SecurityChain                    the chain diagrams
     SectionBar                                 second-level nav, from the registry
     PhotoGrid                                  photo figures, blank until filled
@@ -429,9 +430,13 @@ The rings are Adopt, Trial, Research and Hold. Research is the usual radar's
 Assess: read the docs, maybe built a toy, nothing running.
 
 `RadarBoard` places the blips once and hands the same array to the chart and
-to the numbered key, so the numbering cannot drift between them. It owns the
-hover state, which is why hovering either side highlights both and raises a
-tooltip on the chart.
+to the numbered key below it, so the numbering cannot drift between them. It
+owns the hover state, which is why hovering either side highlights both and
+raises a tooltip on the chart.
+
+`RadarMark` draws the numbered shape — circle, triangle up, triangle down —
+and is used by the key, the sector legends, the tooltip and the side key on a
+tool page, so a shape means the same thing everywhere it appears.
 
 Blip positions are derived from the slug with a small FNV-1a hash, then
 relaxed apart until no two are closer than `radarGeometry.minGap`, clamping

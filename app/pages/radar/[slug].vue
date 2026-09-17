@@ -19,6 +19,14 @@ const sameRing = computed(() =>
   radarEntries.filter(e => e.ring === entry.value!.ring && e.slug !== entry.value!.slug),
 )
 
+/**
+ * The sector's own slice of the radar key, so the numbering follows you onto
+ * a tool page and you can move sideways without going back to the chart.
+ */
+const siblings = computed(() =>
+  placeBlips().filter(b => b.quadrant.id === entry.value!.quadrant),
+)
+
 const movementLabel: Record<Movement, string> = {
   none: 'no change',
   new: 'new entry',
@@ -56,6 +64,9 @@ usePageSeo({
         <span v-if="entry.movement !== 'none'" class="chip">{{ movementLabel[entry.movement] }}</span>
       </div>
     </div>
+
+    <div class="withkey">
+    <div class="withkey-main">
 
     <section class="unit" :data-zone="quadrant.zone">
       <p class="u-slot">what it is</p>
@@ -129,6 +140,21 @@ usePageSeo({
         >{{ e.name }}</NuxtLink>
       </div>
     </section>
+
+    </div>
+
+    <aside class="withkey-side">
+      <p class="rgroup-head" :style="`--zc:var(--${quadrant.zone})`">
+        {{ quadrant.name }}
+        <span>{{ siblings.length }}</span>
+      </p>
+      <RadarIndex :blips="siblings" :current="entry.slug" />
+      <p class="withkey-more">
+        <NuxtLink :to="`/radar/sector/${quadrant.id}`">the whole sector</NuxtLink>
+        <NuxtLink to="/radar">the whole radar</NuxtLink>
+      </p>
+    </aside>
+    </div>
 
     <nav class="pager" aria-label="Pagination">
       <NuxtLink to="/radar"><span>back</span>The whole radar</NuxtLink>
