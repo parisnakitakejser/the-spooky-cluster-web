@@ -1,11 +1,10 @@
 <script setup lang="ts">
 usePageSeo({
   title: 'The rack — the spooky cluster',
-  description: 'One 42U cabinet described by what each group of hardware does: the edge, the clusters, the storage, the switching and the power behind them.',
+  description: 'One cabinet described by what each group of hardware does: the edge, the clusters, the storage, the switching and the power behind them.',
 })
 
 const glance = [
-  { value: '42U', label: 'cabinet' },
   { value: '31U', label: 'in use' },
   { value: '612 W', label: 'idle draw' },
   { value: '1.4 kW', label: 'under load' },
@@ -21,11 +20,10 @@ const summary = {
   <PageHead
     crumb="rack"
     heading="One cabinet, five jobs"
-    lede="A second-hand 42U cabinet that came out of an office move for the price of collecting it. What follows is what is in it and why, grouped by the job each part does rather than by where it sits."
+    lede="A second-hand cabinet that came out of an office move for the price of collecting it. What follows is what is in it and why, grouped by the job each part does rather than by where it sits."
   >
     <template #ghost><GhostRack /></template>
     <template #tags>
-      <ZoneChip zone="m">42u</ZoneChip>
       <ZoneChip zone="p">31u used</ZoneChip>
       <ZoneChip zone="s">1.4 kW peak</ZoneChip>
     </template>

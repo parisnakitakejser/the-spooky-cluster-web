@@ -103,8 +103,7 @@ const rules = [
   >
     <template #ghost><GhostAbout /></template>
     <template #tags>
-      <ZoneChip zone="s">aarhus, denmark</ZoneChip>
-      <ZoneChip zone="m">42u, since 2024</ZoneChip>
+      <ZoneChip zone="m">since 2024</ZoneChip>
       <ZoneChip zone="p">learning by running it</ZoneChip>
     </template>
   </PageHead>
