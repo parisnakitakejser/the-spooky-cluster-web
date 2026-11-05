@@ -22,7 +22,8 @@ const headline = [
 
     <div>
       <h1>the spooky cluster</h1>
-      <p>One 42U rack in a garage somewhere in Denmark. Three Kubernetes clusters, a Ceph pool, and everything from the internet forced through a cleaning zone before it touches anything that matters. Hardware, topology and the numbers I'm not proud of.</p>
+      <p>One big homelab somewhere in Denmark — a playground to build, break, and learn infrastructure, networking, Kubernetes, storage, security, AI, data, and everything in between.</p>
+      <p>Everything coming from the internet is forced through a cleaning zone before it reaches the network that matters.</p>
       <div class="hero-strip">
         <ZoneChip zone="p" to="/compute">prod</ZoneChip>
         <ZoneChip zone="s" to="/compute">stage</ZoneChip>
@@ -36,7 +37,7 @@ const headline = [
   <section class="unit" data-zone="mgmt">
     <p class="u-slot">at a glance</p>
     <h2>The whole lab in six numbers</h2>
-    <p>Everything below is measured, not estimated. Where I've guessed, it says so on the page.</p>
+    <p>Six numbers to give you a feel for the lab — the hardware, the infrastructure, and the scale of what’s running.</p>
     <div class="stats">
       <div v-for="stat in headline" :key="stat.label" class="stat" :class="stat.zone">
         <b>{{ stat.value }}</b>
