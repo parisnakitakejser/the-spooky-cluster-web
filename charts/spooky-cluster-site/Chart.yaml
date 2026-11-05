@@ -4,7 +4,9 @@ description: The spooky cluster homelab site — Nuxt, pre-rendered, served by N
 type: application
 version: 0.1.0
 appVersion: "1.0.0"
-home: https://github.com/parisnakitakejser/the-spooky-cluster-web
+home: https://spooky.rest
+sources:
+  - https://github.com/parisnakitakejser/the-spooky-cluster-web
 keywords:
   - homelab
   - static-site

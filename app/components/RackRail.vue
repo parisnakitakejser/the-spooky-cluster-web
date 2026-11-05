@@ -5,7 +5,7 @@
       <span class="rail-led b" />
       <span class="rail-led c" />
     </div>
-    <span class="rail-mark">rack 01 · 42u · aarhus</span>
+    <span class="rail-mark">rack 01 · homelab · denmark</span>
     <div class="rail-stack">
       <span class="rail-led c" />
       <span class="rail-led b" />

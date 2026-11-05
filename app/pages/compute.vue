@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'Compute — the spooky cluster',
   description: 'Three separate Kubernetes clusters — production, staging and management — their nodes, versions and workloads.',
 })

@@ -32,7 +32,7 @@
 }
 
 .rail-mark {
-  font: 500 10px/1 #{$mono};
+  font: 500 10px/1 $mono;
   color: var(--faint);
   letter-spacing: .06em;
   writing-mode: vertical-rl;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'Storage — the spooky cluster',
   description: 'A three-node Ceph cluster across 36 disks: OSD layout, pools, CRUSH rules and the backup that isn\'t Ceph.',
 })
@@ -76,7 +76,7 @@ const pools = {
       <p>Replication protects against a disk dying. It does nothing about a bad <code>rm</code>, a ransomware event, or a fire in the garage. So there are three copies of anything I would actually miss, and only one of them is Ceph.</p>
       <ul>
         <li><strong>Copy one</strong> — the live Ceph pool, replicated three ways inside the rack.</li>
-        <li><strong>Copy two</strong> — nightly Restic snapshots to a mini PC at my parents' house, 40 km away, over WireGuard. Encrypted before it leaves; they hold no key.</li>
+        <li><strong>Copy two</strong> — nightly Restic snapshots to a small machine at a second site, over WireGuard. Encrypted before it leaves; whoever hosts it holds no key.</li>
         <li><strong>Copy three</strong> — monthly Restic snapshot to Backblaze B2, same encryption, different credentials, and an append-only application key so a compromised cluster cannot delete history.</li>
       </ul>
       <p>Restores are tested on the first Sunday of each month by pulling one random file and one whole volume. An untested backup is a rumour.</p>

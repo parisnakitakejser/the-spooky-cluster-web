@@ -10,7 +10,7 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 6px 14px 6px 10px;
-  font: 500 12px #{$mono};
+  font: 500 12px $mono;
   color: var(--dim);
 
   i {
@@ -29,6 +29,14 @@
       i { box-shadow: 0 0 8px $c; }
     }
   }
+}
+
+// The ghost's own pink, for the sixth sector. Not a zone, so it is not in
+// the $zones map and gets its rule here.
+.chip.k {
+  color: $pink;
+
+  i { box-shadow: 0 0 8px $pink; }
 }
 
 a.chip {
@@ -62,14 +70,16 @@ a.chip {
     &[data-zone="#{map.get($zone, name)}"] { --tag: var(--#{map.get($zone, name)}); }
   }
 
+  &[data-zone="pink"] { --tag: #{$pink}; }
+
   h2 {
-    font: 400 clamp(24px, 3vw, 32px)/1.15 #{$display};
+    font: 400 clamp(24px, 3vw, 32px)/1.15 $display;
     letter-spacing: -.02em;
     margin: 0 0 10px;
   }
 
   h3 {
-    font: 500 16px #{$sans};
+    font: 500 16px $sans;
     margin: 32px 0 12px;
   }
 
@@ -88,7 +98,7 @@ a.chip {
 }
 
 .u-slot {
-  font: 500 11px #{$mono};
+  font: 500 11px $mono;
   color: var(--faint);
   letter-spacing: .08em;
   margin: 0 0 6px;
@@ -108,12 +118,12 @@ a.chip {
 
   &:hover { background: rgba(59, 45, 99, .22); }
 
-  .u { font: 500 12px #{$mono}; color: var(--faint); }
-  .n { font: 500 15px #{$sans}; }
-  .d { font: 400 13px #{$mono}; color: var(--dim); overflow-wrap: anywhere; }
+  .u { font: 500 12px $mono; color: var(--faint); }
+  .n { font: 500 15px $sans; }
+  .d { font: 400 13px $mono; color: var(--dim); overflow-wrap: anywhere; }
 
   .t {
-    font: 500 11px #{$mono};
+    font: 500 11px $mono;
     letter-spacing: .05em;
     padding: 3px 9px;
     border-radius: 4px;
@@ -124,7 +134,7 @@ a.chip {
   &.empty {
     opacity: .42;
 
-    .n { font: 400 13px #{$mono}; color: var(--faint); }
+    .n { font: 400 13px $mono; color: var(--faint); }
   }
 
   @include narrow {
@@ -160,12 +170,12 @@ a.chip {
 
   b {
     display: block;
-    font: 500 28px/1.1 #{$mono};
+    font: 500 28px/1.1 $mono;
     letter-spacing: -.02em;
     margin-bottom: 4px;
   }
 
-  span { font: 400 13px #{$sans}; color: var(--dim); }
+  span { font: 400 13px $sans; color: var(--dim); }
 
   @each $key, $zone in $zones {
     &.#{$key} b { color: map.get($zone, color); }
@@ -187,7 +197,7 @@ a.chip {
   background: var(--rail);
 
   h3 {
-    font: 500 15px #{$sans};
+    font: 500 15px $sans;
     margin: 0 0 6px;
     color: var(--zc, var(--ink));
   }
@@ -199,18 +209,18 @@ a.chip {
     line-height: 1.6;
   }
 
-  code { font: 400 12px #{$mono}; color: var(--faint); }
+  code { font: 400 12px $mono; color: var(--faint); }
 }
 
 // ---------- tables ----------
 .tbl {
   width: 100%;
   border-collapse: collapse;
-  font: 400 13px #{$mono};
+  font: 400 13px $mono;
 
   th {
     text-align: left;
-    font: 500 11px #{$mono};
+    font: 500 11px $mono;
     letter-spacing: .07em;
     color: var(--faint);
     padding: 0 14px 10px 0;
@@ -239,7 +249,7 @@ a.chip {
   strong { color: var(--ink); font-weight: 500; }
 
   code {
-    font: 400 13px #{$mono};
+    font: 400 13px $mono;
     background: var(--rail);
     border: 1px solid var(--line);
     border-radius: 4px;
@@ -265,12 +275,12 @@ a.chip {
   border-bottom: 1px solid var(--line);
 
   time {
-    font: 500 12px #{$mono};
+    font: 500 12px $mono;
     color: var(--faint);
     padding-top: 4px;
   }
 
-  h3 { font: 500 17px #{$sans}; margin: 0 0 8px; }
+  h3 { font: 500 17px $sans; margin: 0 0 8px; }
 
   p {
     margin: 0;
@@ -303,8 +313,11 @@ a.chip {
     transform: translateY(-2px);
   }
 
+  // A card that is not a link should not lift or invite a click.
+  &.static:hover { transform: none; }
+
   h3 {
-    font: 500 17px #{$sans};
+    font: 500 17px $sans;
     margin: 0 0 6px;
     color: var(--ink);
   }
@@ -319,7 +332,7 @@ a.chip {
   .meta {
     display: block;
     margin-top: 12px;
-    font: 500 11px #{$mono};
+    font: 500 11px $mono;
     letter-spacing: .06em;
     color: var(--zc, var(--faint));
   }
@@ -346,7 +359,7 @@ a.chip {
   gap: 18px;
   flex-wrap: wrap;
   margin-top: 16px;
-  font: 400 12px #{$mono};
+  font: 400 12px $mono;
   color: var(--faint);
 
   span {
@@ -364,3 +377,173 @@ a.chip {
     &.dash { border-top-style: dashed; }
   }
 }
+
+// ---------- photographs ----------
+.shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.shot {
+  margin: 0;
+
+  &.wide { grid-column: 1 / -1; }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--rail);
+  }
+
+  figcaption {
+    margin-top: 10px;
+    font: 400 13px $sans;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+}
+
+// An empty slot should look deliberate, the way a blanking panel does.
+.shot-empty {
+  aspect-ratio: 4 / 3;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--cab) 0 10px,
+    var(--rail) 10px 20px
+  );
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 16px;
+
+  span {
+    font: 500 11px $mono;
+    letter-spacing: .08em;
+    color: var(--faint);
+  }
+
+  code {
+    font: 400 11px $mono;
+    color: var(--faint);
+    opacity: .75;
+    overflow-wrap: anywhere;
+  }
+}
+
+// ---------- portrait ----------
+.intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 34px;
+  align-items: start;
+
+  @include narrow {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    justify-items: start;
+  }
+}
+
+.portrait {
+  margin: 0;
+  text-align: center;
+  flex: none;
+}
+
+.portrait-ring {
+  width: 184px;
+  height: 184px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--rail);
+  border: 2px solid $pink;
+  box-shadow: 0 0 26px rgba(255, 79, 163, .22);
+  display: grid;
+  place-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @include narrow { width: 128px; height: 128px; }
+}
+
+// Placeholder ring: dashed, and the ghost stands in until there is a face.
+.portrait-ring.empty {
+  border-style: dashed;
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.portrait-ghost {
+  width: 62%;
+  height: 62%;
+  color: $pink;
+  opacity: .5;
+}
+
+.portrait figcaption {
+  margin-top: 12px;
+  font: 400 11px $mono;
+  color: var(--faint);
+  overflow-wrap: anywhere;
+  max-width: 184px;
+
+  @include narrow { max-width: 128px; }
+}
+
+
+// ---------- status pill ----------
+.pill {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid currentColor;
+  font: 500 10px $mono;
+  letter-spacing: .06em;
+  text-transform: lowercase;
+  vertical-align: middle;
+  color: var(--faint);
+
+  &[data-status="daily"],
+  &[data-status="live"] { color: zone-color(s); }
+  &[data-status="testing"],
+  &[data-status="building"] { color: zone-color(m); }
+  &[data-status="paused"] { color: zone-color(c); }
+  &[data-status="archived"] { color: zone-color(d); }
+  &[data-status="mine"] { color: var(--faint); }
+}
+
+// ---------- an unfilled piece of prose ----------
+// Same idea as a blank photo slot: visibly waiting rather than broken.
+.edit-slot {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: var(--rail);
+  font-size: 14px;
+  color: var(--faint);
+
+  strong { color: var(--dim); font-weight: 500; }
+
+  code {
+    font: 400 12px $mono;
+    color: var(--dim);
+    background: var(--cab);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+}
+

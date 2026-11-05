@@ -33,7 +33,7 @@ body {
   margin: 0;
   background: var(--void);
   color: var(--ink);
-  font: 400 16px/1.7 #{$sans};
+  font: 400 16px/1.7 $sans;
   -webkit-font-smoothing: antialiased;
 }
 

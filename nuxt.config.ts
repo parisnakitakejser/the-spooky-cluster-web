@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     preset: 'node-server',
     prerender: {
       crawlLinks: true,
-      routes: ['/'],
+      routes: ['/', '/sitemap.xml'],
       failOnError: true,
     },
   },

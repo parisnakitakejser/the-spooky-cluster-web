@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({
+usePageSeo({
   title: 'Build log — the spooky cluster',
   description: 'What changed, what broke, and what I\'d do differently. Newest first.',
 })
@@ -47,7 +47,7 @@ const entries = [
     date: '2026-01-11',
     label: '11 Jan',
     title: 'Third off-site backup copy added',
-    body: 'Monthly Restic to Backblaze B2 with an append-only application key. Two copies in Denmark is not the same as two copies in two buildings, and the mini PC at my parents\' is still in the same weather system as the rack.',
+    body: 'Monthly Restic to Backblaze B2 with an append-only application key. Two copies in one country is not the same as two copies in two weather systems, and the second site is still in the same one as the rack.',
   },
 ]
 </script>

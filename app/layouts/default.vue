@@ -7,6 +7,7 @@
     <SiteHeader />
 
     <main id="main" class="wrap">
+      <SectionBar />
       <slot />
     </main>
   </div>
