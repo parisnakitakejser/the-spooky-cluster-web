@@ -1,6 +1,6 @@
 # the spooky cluster
 
-A site documenting a 42U homelab near Aarhus: the rack, three Kubernetes
+A site documenting a homelab: the rack, three Kubernetes
 clusters, a Ceph pool, and the security zones everything has to pass through.
 
 Live at **[spooky.rest](https://spooky.rest)**.

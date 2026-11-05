@@ -1,7 +1,7 @@
 <script setup lang="ts">
 usePageSeo({
   title: 'the spooky cluster — homelab',
-  description: 'A 42U homelab running Kubernetes, Ceph and a segmented security zone. Hardware, topology and numbers.',
+  description: 'A homelab running Kubernetes, Ceph and a segmented security zone. Hardware, topology and numbers.',
 })
 
 /** Each tile carries its own zone colour, so `zone` rides along with the number. */
